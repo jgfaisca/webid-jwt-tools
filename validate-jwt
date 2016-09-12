@@ -12,6 +12,17 @@ function error(){
   exit 1
 }
 
+if [ $# -ne 1 ]; then
+  echo
+  echo "Invalid number of arguments."
+  echo "Usage: ./$(basename "$0") <namecoin_address>"
+  echo
+  exit 1
+fi
+
+NMC_ADDRESS="$1"
+#DATADIR="$HOME/.namecoin"
+DATA_DIR="/data/namecoin"
 FILE1="access_token"
 
 # Read the access token
@@ -35,4 +46,7 @@ payload=$(echo "${jwt[1]}" |base64 -d)
 signature=$(echo "${jwt[2]}" | base64 -d)
 message="$header.$payload"
 
-echo "$header.$payload.$signature"
+#echo "$header.$payload.$signature"
+
+OUT=$(namecoin-cli -datadir=$DATA_DIR verifymessage ${NMC_ADDRESS} ${signature} ${message})
+echo $OUT

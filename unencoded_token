@@ -1,1 +1,1 @@
-{"alg":"HS256","typ":"JWT"}.{"sub":"1234567890","name":"Alice Doe","admin":true}.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ
+{"typ":"JWT","alg":"ES256"}.{"iss":"id/Bob"}.IPu2K5fvfpCnatTFms7E5rtcdtbkh1y2XcqZAS7jD6aHLxtLxUUXd+453S0Y6ywd5jWK6ZzMOvjhANI72ku+mUA=
