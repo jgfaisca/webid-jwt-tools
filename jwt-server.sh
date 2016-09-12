@@ -5,8 +5,10 @@
 #
 
 LOG_REQ="/tmp/requests" # requests log
-PORT=1500 # port
+PORT=8888 # port
 export LOG_REQ
+
+echo "Serving HTTP on 0.0.0.0 port $PORT ..."
 
 rm -f $LOG_REQ
 rm -f out
@@ -14,7 +16,7 @@ mkfifo out
 trap "rm -f out" EXIT
 while true
 do
-  cat out | nc -l $PORT > >( # parse the netcat output, to build the answer redirected to the pipe "out".
+  cat out | nc -l -p $PORT > >( # parse the netcat output, to build the answer redirected to the pipe "out".
     export REQUEST=
     while read line
     do
@@ -28,7 +30,7 @@ do
       then
         # call response script
         # Note: REQUEST is exported, so the script can parse it (to answer 200/403/404 status code + content)
-        ./response.sh > out
+        response.sh > out
       fi
     done
   )

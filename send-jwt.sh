@@ -6,6 +6,6 @@
 
 JWT="xxxxxxxxxxxxx3"
 HOST="http://localhost"
-PORT=1500
+PORT=8888
 
-curl -H "Authorization: Token ${JWT}" ${HOST}:${PORT}
+curl -H "Authorization: Token ${JWT}" ${HOST}:${PORT} || printf '%s\n' $?
