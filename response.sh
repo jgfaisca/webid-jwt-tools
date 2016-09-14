@@ -52,7 +52,7 @@ curl -o $tmpfile ${IPFS_GW}${uri}
 name=$(sparql-triples-person.py $tmpfile)
 
 # use SPARQL to get wallet address from profile
-wallet=$(echo $(sparql-wallet.py $tmpfile) | cut --delimiter="'" -f 2)
+wallet=$(sparql-triples-wallet.py $tmpfile)
 
 # remove temporary file
 rm -f $tmpfile
