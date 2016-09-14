@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Build http server response
+# Build the HTTP server response
 #
 #
 
@@ -49,7 +49,7 @@ tmpfile=$(mktemp /tmp/profile_XXXXXX)
 curl -o $tmpfile ${IPFS_GW}${uri}
 
 # use SPARQL to get person name from profile
-name=$(echo $(sparql-person.py $tmpfile) | cut --delimiter="'" -f 2)
+name=$(sparql-triples-person.py $tmpfile)
 
 # use SPARQL to get wallet address from profile
 wallet=$(echo $(sparql-wallet.py $tmpfile) | cut --delimiter="'" -f 2)
