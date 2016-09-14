@@ -4,6 +4,7 @@
 #
 # Authors:
 # Jose G. Faisca <jose.faisca@gmail.com>
+#
 
 import sys
 import rdflib
