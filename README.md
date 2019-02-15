@@ -1,2 +1,2 @@
-# jwt-tools
-JSON Web Tokens (JWT) tools
+# webid-jwt-tools
+WebID - JSON Web Tokens (JWT) tools
