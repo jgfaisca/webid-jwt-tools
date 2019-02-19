@@ -4,16 +4,16 @@
 #
 #
 
-LOG_REQ="/tmp/requests" # requests log
-FIFO="/tmp/fifo_out" # named pipe
+LOG_REQ="/tmp/requests.log" # requests log
+FIFO_OUT="/tmp/fifo_out" # named pipe
 PORT=8888 # port
 export LOG_REQ
 
 echo "Serving HTTP on 0.0.0.0 port $PORT ..."
 
 # create log file
-[ -d "$LOG_REQ" ] && rm -rf "$LOG_REQ" 
-mkdir -p $LOG_REQ
+[ -f "$LOG_REQ" ] && rm -f "$LOG_REQ" 
+touch $LOG_REQ
 
 # create named pipe
 [ -p "$FIFO_OUT" ] && rm -f "$FIFO_OUT" 
