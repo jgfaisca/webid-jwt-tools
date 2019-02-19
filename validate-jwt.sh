@@ -7,8 +7,8 @@
 # error function
 function error(){
   code=$1
-  [ $code -eq 1 ] && echo "File not found."
-  [ $code -eq 2 ] && echo "Wrong number of JWT elements ($elements)"
+  [ $code -eq 1 ] && echo "Error: File not found."
+  [ $code -eq 2 ] && echo "Error: Wrong number of JWT elements ($elements)"
   exit 1
 }
 
