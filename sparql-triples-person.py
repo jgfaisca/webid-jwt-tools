@@ -1,4 +1,5 @@
 #!/usr/bin/python
+#
 # dependencies:
 # pip install rdfextras rdflib rdflib-sparql
 #
@@ -22,7 +23,7 @@ g.parse(profile_doc)
 
 # mid2 = time.time()
 
-for s, p, o in g.triples((None,URIRef("http://xmlns.com/foaf/0.1/name"),None)):
-   print(o)
+for subj, pred, obj in g.triples((None,URIRef("http://xmlns.com/foaf/0.1/name"),None)):
+   print(obj)
 
 # end = time.time()
