@@ -4,7 +4,8 @@
 #
 #
 # Usage:
-# ./jwt-server.sh <port>
+# PATH=$PATH:$(pwd)
+# jwt-server.sh <port>
 #
 # Description:
 # JWT HTTP server (Token Receiver)
