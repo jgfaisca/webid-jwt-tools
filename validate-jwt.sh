@@ -22,6 +22,7 @@ if [ $# -ne 1 ]; then
   exit 1
 fi
 
+# variables
 NMC_ADDRESS="$1"
 #DATADIR="$HOME/.namecoin"
 DATA_DIR="/data/namecoin"
@@ -36,27 +37,20 @@ IFS='.' read -r -a jwt <<< "$access_token"
 elements="${#jwt[@]}"
 [ $elements -ne 3 ] && error 2
 
-# Print the jwt array
+# print the jwt array
 #for index in "${!jwt[@]}"
 #do
 #    echo "$index ${jwt[index]}"
 #done
 
-# unencode header 
+# decode header.payload.signature 
 header=$(echo "${jwt[0]}" | base64 -d)
-
-# unencode payload
 payload=$(echo "${jwt[1]}" |base64 -d)
-
-# unencode signature
 signature=$(echo "${jwt[2]}" | base64 -d)
+#echo "$header.$payload.$signature"
 
 # create message
 message="$header.$payload"
 
-# print unencoded JWT
-#echo "$header.$payload.$signature"
-
 # validate 
-OUT=$(namecoin-cli -datadir=$DATA_DIR verifymessage ${NMC_ADDRESS} ${signature} ${message})
-echo $OUT
+echo $(namecoin-cli -datadir=$DATA_DIR verifymessage ${NMC_ADDRESS} ${signature} ${message})
