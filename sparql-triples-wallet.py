@@ -1,6 +1,7 @@
 #!/usr/bin/python
+#
 # dependencies:
-# pip install rdfextras rdflib rdflib-sparql
+# pip install rdfextras rdflib 
 #
 # Authors:
 # Jose G. Faisca <jose.faisca@gmail.com>
@@ -22,13 +23,14 @@ g.parse(profile_doc)
 # mid2 = time.time()
 
 #print("--- printing raw triples ---")
-#for s, p, o in g:
-#    print((s, p, o))
+#for subj, pred, obj in g:
+#    print((subj, pred, obj))
 #
 #print("----------------------------")
 
-for s, p, o in g.triples((None,URIRef("https://w3id.org/cc#namecoin"),None)):
-   print(o)
+for subj, pred, obj in g.triples((None,URIRef("https://w3id.org/cc#wallet"),None)):
+        network,address = obj.split(":")
+        print (address)
 
 # end = time.time()
 
