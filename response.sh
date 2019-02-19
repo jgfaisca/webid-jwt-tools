@@ -27,9 +27,9 @@ if [ $elements -ne 3 ] ; then
    exit 1
 fi
 
-header=$(echo "${jwt[0]}" | base64 -d)
-payload=$(echo "${jwt[1]}" |base64 -d)
-signature=$(echo "${jwt[2]}" | base64 -d)
+header=$(echo "${jwt[0]}" | base64 -i -d)
+payload=$(echo "${jwt[1]}" |base64 -i -d)
+signature=$(echo "${jwt[2]}" | base64 -i -d)
 message="$header.$payload"
 
 # get the iss value
@@ -46,7 +46,7 @@ uri=$(echo $out1 | python -c "import sys, json; print json.load(sys.stdin)['uri'
 
 # get profile document from IPFS
 tmpfile=$(mktemp /tmp/profile_XXXXXX)
-curl -o $tmpfile ${IPFS_GW}${uri}
+curl --silent --output $tmpfile ${IPFS_GW}${uri}
 
 # use SPARQL to get person name from profile
 name=$(sparql-triples-person.py $tmpfile)
