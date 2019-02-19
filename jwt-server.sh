@@ -5,18 +5,24 @@
 #
 
 LOG_REQ="/tmp/requests" # requests log
+FIFO="/tmp/fifo_out" # named pipe
 PORT=8888 # port
 export LOG_REQ
 
 echo "Serving HTTP on 0.0.0.0 port $PORT ..."
 
-rm -f $LOG_REQ
-rm -f out
-mkfifo out
-trap "rm -f out" EXIT
+# create log file
+[ -d "$LOG_REQ" ] && rm -rf "$LOG_REQ" 
+mkdir -p $LOG_REQ
+
+# create named pipe
+[ -p "$FIFO_OUT" ] && rm -f "$FIFO_OUT" 
+mkfifo $FIFO_OUT
+trap "rm -f $FIFO_OUT" EXIT
+
 while true
 do
-  cat out | nc -l -p $PORT > >( # parse the netcat output, to build the answer redirected to the pipe "out".
+  cat $FIFO_OUT | nc -l -p $PORT > >( # parse the netcat output, to build the answer redirected to the named pipe "out".
     export REQUEST=
     while read line
     do
@@ -30,7 +36,7 @@ do
       then
         # call response script
         # Note: REQUEST is exported, so the script can parse it (to answer 200/403/404 status code + content)
-        response.sh > out
+        response.sh > $FIFO_OUT
       fi
     done
   )
