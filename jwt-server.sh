@@ -4,12 +4,11 @@
 #
 #
 
+# variables
 LOG_REQ="/tmp/requests.log" # requests log
 FIFO_OUT="/tmp/fifo_out" # named pipe
-PORT=8888 # port
+PORT=${1:-8888} # default port 
 export LOG_REQ
-
-echo "Serving HTTP on 0.0.0.0 port $PORT ..."
 
 # create log file
 [ -f "$LOG_REQ" ] && rm -f "$LOG_REQ" 
@@ -19,6 +18,9 @@ touch $LOG_REQ
 [ -p "$FIFO_OUT" ] && rm -f "$FIFO_OUT" 
 mkfifo $FIFO_OUT
 trap "rm -f $FIFO_OUT" EXIT
+
+# print initial console message
+echo "Serving HTTP on 0.0.0.0 port $PORT ..."
 
 while true
 do
