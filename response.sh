@@ -6,8 +6,8 @@
 
 export PYTHONIOENCODING=utf8
 
-IPFS_GW="http://192.168.15.54:8880"
-LOG_REQ="/tmp/requests"
+IPFS_GW="http://127.0.0.1:8880"
+LOG_REQ="/tmp/requests.log"
 DATADIR="$HOME/.namecoin"
 
 LAST_LINE_REQ=$(cat $LOG_REQ | tail -2)
