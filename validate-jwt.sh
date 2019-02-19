@@ -5,7 +5,7 @@
 #
 # Description:
 # This script decode JWT and validate signature
-# Using the Linux Bash base64 command for decoding
+# Using the base64 command for decoding
 #
 
 # error function
