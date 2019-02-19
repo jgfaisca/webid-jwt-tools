@@ -1,8 +1,14 @@
 #!/bin/bash
 #
-# Create the JWT
-# Using the Linux Bash base64 command 
-#
+
+<< ---
+Usage:
+./create_jwt.sh <namecoin_address>
+
+Description:
+This script creates an JWT
+Using the Linux Bash base64 command 
+---
 
 # error function
 function error(){
