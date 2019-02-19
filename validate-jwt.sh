@@ -1,14 +1,12 @@
 #!/bin/bash
 #
-
-<< ---
-Usage:
-./validate.jwt <namecoin_address>
-
-Description:
-This script decode JWT and validate signature
-Using the Linux Bash base64 command 
----
+# Usage:
+# ./validate.jwt <namecoin_address>
+#
+# Description:
+# This script decode JWT and validate signature
+# Using the Linux Bash base64 command for decoding
+#
 
 # error function
 function error(){
