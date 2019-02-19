@@ -33,7 +33,7 @@ echo "Serving HTTP on 0.0.0.0 port $PORT ..."
 
 while true
 do
-  cat $FIFO_OUT | nc -l -p $PORT > >( # parse the netcat output, to build the answer redirected to the named pipe "out".
+  cat $FIFO_OUT | nc -l -p $PORT > >( # parse the netcat output, to build the answer redirected to "fifo_out".
     export REQUEST=
     while read line
     do
