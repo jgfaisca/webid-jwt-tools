@@ -6,7 +6,7 @@
 
 export PYTHONIOENCODING=utf8
 
-IPFS_GW="http://127.0.0.1:8880"
+IPFS_GW="http://127.0.0.1:8080"
 LOG_REQ="/tmp/requests.log"
 DATADIR="$HOME/.namecoin"
 
@@ -40,7 +40,7 @@ if [ $? -ne 0 ]; then
 fi
 
 # get the uri value from NMC
-nshow=$(namecoind -datadir=$DATADIR name_show "$iss")
+nshow=$(namecoin-cli -datadir=$DATADIR name_show "$iss")
 out1=$(echo $nshow | python -c "import sys, json; print json.load(sys.stdin)['value']")
 uri=$(echo $out1 | python -c "import sys, json; print json.load(sys.stdin)['uri']")
 
@@ -58,7 +58,7 @@ wallet=$(sparql-triples-wallet.py $tmpfile)
 rm -f $tmpfile
 
 # verify signature
-verify=$(namecoind -datadir=$DATADIR verifymessage $wallet $signature $message)
+verify=$(namecoin-cli -datadir=$DATADIR verifymessage $wallet $signature $message)
 
 if [ "$verify" == "true" ]; then
 	echo "Hello $name, you have successfully logged in!"
