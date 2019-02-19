@@ -53,3 +53,6 @@ message="$header.$payload"
 
 # validate 
 echo $(namecoin-cli -datadir=$DATA_DIR verifymessage ${NMC_ADDRESS} ${signature} ${message})
+
+exit 0
+
