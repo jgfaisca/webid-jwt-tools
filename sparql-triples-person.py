@@ -4,7 +4,6 @@
 # pip install rdfextras rdflib rdflib-sparql
 #
 # Authors: 
-# Norman Radtke <radtke@informatik.uni-leipzig.de>
 # Jose G. Faisca <jose.faisca@gmail.com>
 #
 
