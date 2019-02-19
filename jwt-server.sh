@@ -3,6 +3,14 @@
 # JWT HTTP server (Token Receiver)
 #
 #
+# Usage:
+# ./jwt-server.sh <port>
+#
+# Description:
+# JWT HTTP server (Token Receiver)
+# Using the nc (Netcat) command for arbitrary TCP 
+# connections and listens and a named pipe for reading or writing
+#
 
 # variables
 LOG_REQ="/tmp/requests.log" # requests log
