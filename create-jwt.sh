@@ -5,7 +5,7 @@
 #
 # Description:
 # This script creates an JWT 
-# Using the Linux Bash base64 command for encoding
+# Using the base64 command for encoding
 #
 
 # error function
