@@ -1,8 +1,7 @@
 #!/bin/bash
 #
 # Decode JWT and validate signature
-# Using the Linux Bash base64 command and the jq utility
-# (JSON processor for shell) https://stedolan.github.io/jq/
+# Using the Linux Bash base64 command 
 #
 
 # error function
