@@ -1,2 +1,2 @@
 {"typ":"JWT","alg":"ES256"}
-{"iss":"id/Bob"}
+{"iss":"id/bob"}
