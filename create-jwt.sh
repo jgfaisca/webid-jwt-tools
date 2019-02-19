@@ -1,6 +1,8 @@
 #!/bin/bash
 #
 # Create the JWT
+# Using the Linux Bash base64 command and the jq utility
+# (JSON processor for shell) https://stedolan.github.io/jq/
 #
 
 # error function
@@ -46,12 +48,10 @@ signature=$(namecoin-cli -datadir=$DATA_DIR signmessage "${NMC_ADDRESS}" "${mess
 unencoded_token="$message.$signature"
 echo $unencoded_token > $FILE2
 
-# create access_token
+# create access_token 
 enc="$(echo -n "$header" | base64 | tr -d '\n')"
 enc="$enc.$(echo "$payload" | base64 | tr -d '\n')"
 enc="$enc.$(echo "$signature" | base64 | tr -d '\n')"
-
-# save acces_token to file
 echo $enc > $FILE3
 
 # print access_token
