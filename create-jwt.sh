@@ -2,6 +2,9 @@
 #
 # Usage:
 # ./create_jwt.sh <namecoin_address>
+# 
+# Example:
+# ./create_jwt.sh id/bob
 #
 # Description:
 # This script creates an JWT 
@@ -20,13 +23,14 @@ function error(){
 if [ $# -ne 1 ]; then
   echo
   echo "Invalid number of arguments."
-  echo "Usage: ./$(basename "$0") <namecoin_address>"
+  echo "Usage: ./$(basename "$0") <namespace/name>"
   echo
   exit 1
 fi
 
 # variables
-NMC_ADDRESS="$1"
+iss="$1"
+NMC_ADDRESS=""
 #DATADIR="$HOME/.namecoin"
 DATA_DIR="/data/namecoin"
 FILE1="header_payload"
@@ -34,6 +38,10 @@ FILE2="unencoded_token"
 FILE3="access_token"
 WALLET_PW="secret"
 UNLOCK_SEC=10
+
+# get address value from NMC
+nshow=$(namecoin-cli -datadir=$DATADIR name_show "$iss")
+NMC_ADDRESS=$(echo $nshow | python -c "import sys, json; print json.load(sys.stdin)['address']")
 
 # create message
 [ ! -f $FILE1 ] && error 1
