@@ -23,7 +23,7 @@ function error(){
 if [ $# -ne 1 ]; then
   echo
   echo "Invalid number of arguments."
-  echo "Usage: ./$(basename "$0") <namespace/name>"
+  echo "Usage: ./$(basename "$0") <issuer>"
   echo
   exit 1
 fi
