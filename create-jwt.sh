@@ -1,11 +1,5 @@
 #!/bin/bash
 #
-# Usage:
-# ./create_jwt.sh <issuer>
-# 
-# Example:
-# ./create_jwt.sh id/bob
-#
 # Description:
 # This script creates an JWT 
 # Using the base64 command for encoding
@@ -19,21 +13,14 @@ function error(){
   exit 1
 }
 
-# chech arguments
-if [ $# -ne 1 ]; then
-  echo
-  echo "Invalid number of arguments."
-  echo "Usage: ./$(basename "$0") <issuer>"
-  echo
-  exit 1
-fi
-
 # variables
-iss="$1"
+. /jwt.conf
+iss="$ISSUER"
 NMC_ADDRESS=""
 #DATADIR="$HOME/.namecoin"
 DATA_DIR="/data/namecoin"
-FILE1="header_payload"
+FILE0="header.template"
+FILE1="payload.template"
 FILE2="unencoded_token"
 FILE3="access_token"
 WALLET_PW="secret"
@@ -44,10 +31,12 @@ nshow=$(namecoin-cli -datadir=$DATADIR name_show "$iss")
 NMC_ADDRESS=$(echo $nshow | python -c "import sys, json; print json.load(sys.stdin)['address']")
 
 # create message
+[ ! -f $FILE0 ] && error 1
 [ ! -f $FILE1 ] && error 1
-header=$(awk 'NR==1' $FILE1)
-payload=$(awk 'NR==2' $FILE1)
-message=$header.$payload
+header=$(awk -v val="${ALGORITHM}" '{gsub("ALGORITHM",val); print}' $FILE0)
+payload=$(awk -v val="${ISSUER}" '{gsub("ISSUER",val); print}' $FILE1)
+message=$header.$payload 
+echo $message > message
 
 # unlock wallet for n seconds
 namecoin-cli -datadir=$DATA_DIR walletpassphrase "${WALLET_PW}" $UNLOCK_SEC &>/dev/null
