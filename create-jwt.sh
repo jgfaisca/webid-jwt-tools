@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # Usage:
-# ./create_jwt.sh <iss>
+# ./create_jwt.sh <issuer>
 # 
 # Example:
 # ./create_jwt.sh id/bob
