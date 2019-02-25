@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # Usage:
-# ./create_jwt.sh <namecoin_address>
+# ./create_jwt.sh <iss>
 # 
 # Example:
 # ./create_jwt.sh id/bob
