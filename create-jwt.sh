@@ -40,7 +40,6 @@ NMC_ADDRESS=$(echo $nshow | python -c "import sys, json; print json.load(sys.std
 # create message
 [ ! -f $FILE0 ] && error 1
 [ ! -f $FILE1 ] && error 1
-replaceVar 
 header=$(awk -v val="${ALGORITHM}" '{gsub("ALGORITHM",val); print}' $FILE0)
 echo header $header
 echo $header > header
