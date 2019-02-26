@@ -55,7 +55,7 @@ message=$header.$payload
 echo $message > $TMP_DIR/message
 
 # get address value from NMC
-nshow=$(namecoin-cli -datadir=$DATA_DIR name_show "$iss")
+nshow=$(namecoin-cli -datadir=$NMC_DATA_DIR name_show "$iss")
 NMC_ADDRESS=$(echo $nshow | python -c "import sys, json; print json.load(sys.stdin)['address']")
 
 # unlock wallet for n seconds
