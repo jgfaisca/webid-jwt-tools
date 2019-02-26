@@ -23,13 +23,13 @@ function replaceVar(){
 }
 
 # variables
-. jwt.conf
+. conf/jwt.conf
 iss="$ISSUER"
 NMC_ADDRESS=""
 #DATADIR="$HOME/.namecoin"
 DATA_DIR="/data/namecoin"
-FILE0="header.template"
-FILE1="payload.template"
+FILE0="conf/header.template"
+FILE1="conf/payload.template"
 FILE2="unencoded_token"
 FILE3="access_token"
 WALLET_PW="secret"
