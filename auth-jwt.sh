@@ -1,7 +1,8 @@
 
 #!/bin/bash
 #
-# Send JWT on the HTTP Authorization header 
+# JWT Authentication  
+# (send JWT on the HTTP Authorization header) 
 #
 
 # error function
