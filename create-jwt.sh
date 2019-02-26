@@ -40,25 +40,16 @@ nshow=$(namecoin-cli -datadir=$DATA_DIR name_show "$iss")
 NMC_ADDRESS=$(echo $nshow | python -c "import sys, json; print json.load(sys.stdin)['address']")
 
 # create message
-[ ! -f $FILE0 ] && error 1
-[ ! -f $FILE1 ] && error 1
-cp $FILE0 header
-#header=$(awk -v val="${ALGORITHM}" '{gsub("ALGORITHM",val); print}' $FILE0)
+[ ! -f $FILE0 ] || cp $FILE0 header && error 1
+[ ! -f $FILE1 ] || cp $FILE1 payload && error 1
 replaceVar "ALGORITHM" ${ALGORITHM} header
-#echo $header > header
-cp $FILE1 payload
-#payload=$(awk -v val="${ISSUER}" '{gsub("ISSUER",val); print}' $FILE1)
 replaceVar "ISSUER" "${ISSUER}" payload
-#echo $payload > payload
 if [ -z "$EXPIRYDATE" ]; then
     DATE=$(perl -e '$x=time+(${HOURS}*3600);print $x')
-    #payload=$(awk -v val="${DATE}" '{gsub("EXPIRYDATE",val); print}' payload)
     replaceVar "EXPIRYDATE" "${DATE}" payload
 else
-    #payload=$(awk -v val="${EXPIRYDATE}" '{gsub("EXPIRYDATE",val); print}' payload)
     replaceVar "EXPIRYDATE" "${EXPIRYDATE}" payload
 fi
-#echo $payload > payload
 header=$(cat header)
 payload=$(cat payload)
 message=$header.$payload 
