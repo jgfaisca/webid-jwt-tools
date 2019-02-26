@@ -21,6 +21,7 @@ JWTS_IP="10.18.0.8"
 # Docker jwt-server container
 JWTS_CT="$1"
 
+# Run container
 docker run -d \
 	--net $NET_NAME --ip $JWTS_IP \
 	--name $JWTS_CT \
