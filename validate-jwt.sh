@@ -8,11 +8,15 @@
 # Using the base64 command for decoding
 #
 
-# error function
-function error(){
-  code=$1
-  [ $code -eq 1 ] && echo "Error: File not found."
-  [ $code -eq 2 ] && echo "Error: Wrong number of JWT elements ($elements)"
+# error1 function
+function error1(){
+  echo "Error: File $1 not found."
+  exit 1
+}
+
+# error2 function
+function error2(){
+  echo "Error: Wrong number of JWT elements ($elements)"
   exit 1
 }
 
@@ -30,21 +34,22 @@ CONF_DIR="conf"
 DLT_CONF_FILE="$CONF_DIR/dlt/wallet.conf"
 
 # read configuration file(s)
-[ -r "$DLT_CONF_FILE" ] || error 1
+[ -r "$DLT_CONF_FILE" ] || error1 "$DLT_CONF_FILE"
 . $DLT_CONF_FILE
 
-# variables
-NMC_ADDRESS="$1"
-FILE1="$TMP_DIR/access_token"
+# read wallet address 
+WALLET_ADDRESS_FILE="$TMP_DIR/wallet_address"
+[ -r $WALLET_ADDRESS_FILE ] && wallet_address=$(cat $WALLET_ADDRESS_FILE) || error1 $WALLET_ADDRESS_FILE 
 
 # read access_token
-[ -r $FILE1 ] && access_token=$(cat $FILE1) || error 1
+ACCESS_TOKEN_FILE="$TMP_DIR/access_token"
+[ -r $ACCESS_TOKEN_FILE ] && access_token=$(cat $ACCESS_TOKEN_FILE) || error1 $ACCESS_TOKEN_FILE 
 
 # stripping the JWT parts header.payload.signature into an array
 declare -a jwt
 IFS='.' read -r -a jwt <<< "$access_token"
 elements="${#jwt[@]}"
-[ $elements -ne 3 ] && error 2
+[ $elements -ne 3 ] && error2
 
 # print the jwt array
 #for index in "${!jwt[@]}"
