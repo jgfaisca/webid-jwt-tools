@@ -70,7 +70,7 @@ if [ "$verify" == "true" ]; then
         </head>
         <body>
 	<h3>Success!</h3>
-        <p>Hello $name, you logged in</p>
+        <p>Hello $name, you logged in.</p>
         </body>
         </html>
 	_EOF_
