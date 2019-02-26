@@ -22,6 +22,7 @@ function replaceVar(){
 }
 
 # variables
+. jwt.conf
 iss="$ISSUER"
 NMC_ADDRESS=""
 #DATADIR="$HOME/.namecoin"
