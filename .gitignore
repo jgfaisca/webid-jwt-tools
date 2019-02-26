@@ -1,8 +1,3 @@
-access_token
-unencoded_token
-header
-payload
-message
 tmp/
 conf/jwt/jwt.conf
 conf/dlt/wallet.conf
