@@ -40,8 +40,8 @@ nshow=$(namecoin-cli -datadir=$DATA_DIR name_show "$iss")
 NMC_ADDRESS=$(echo $nshow | python -c "import sys, json; print json.load(sys.stdin)['address']")
 
 # create message
-[ -f "$FILE0" ] || cp $FILE0 header && error 1
-[ -f "$FILE1" ] || cp $FILE1 payload && error 1
+[ -r "$FILE0" ] && cp $FILE0 header || error 1
+[ -r "$FILE1" ] && cp $FILE1 payload || error 1
 replaceVar "ALGORITHM" ${ALGORITHM} header
 replaceVar "ISSUER" "${ISSUER}" payload
 if [ -z "$EXPIRYDATE" ]; then
