@@ -7,7 +7,7 @@
 
 # error function
 function error(){
-  echo "Error: File $1 not found."
+  echo "Error: The file $1 was not found."
   exit 1
 }
 
