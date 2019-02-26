@@ -42,9 +42,8 @@ fi
 
 # get the exp value
 exp=$(echo $payload | python -c "import sys, json; print json.load(sys.stdin)['exp']")
-if [ $? -eq 0 ]; then
-    # token contain the 'exp' value!"
-    now=$(date +%s)
+if [ $? -eq 0 ]; then # token contain the 'exp' value"
+    now=$(date +%s) # current time
     if [ $exp -le $now ]; then 
     	echo "expired token!"
 	exit 1
