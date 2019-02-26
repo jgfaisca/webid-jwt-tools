@@ -14,7 +14,8 @@
 # variables
 LOG_REQ="/tmp/requests.log" # requests log
 FIFO_OUT="/tmp/fifo_out" # named pipe
-PORT=${1:-8888} # default port 
+PORT=${1:-8888} # local port number 
+ADDR="0.0.0.0" # local source address
 export LOG_REQ
 
 # create log file
@@ -27,11 +28,11 @@ mkfifo $FIFO_OUT
 trap "rm -f $FIFO_OUT" EXIT
 
 # print initial console message
-echo "Serving HTTP on 0.0.0.0 port $PORT ..."
+echo "Serving HTTP on $ADDR port $PORT ..."
 
 while true
 do
-  cat $FIFO_OUT | nc -l -p $PORT > >( # parse the netcat output, to build the answer redirected to "fifo_out".
+  cat $FIFO_OUT | nc -l -q 1 -s $ADDR -p $PORT > >( # parse the netcat output, to build the answer redirected to "fifo_out".
     export REQUEST=
     while read line
     do
