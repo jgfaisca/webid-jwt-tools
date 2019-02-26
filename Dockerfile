@@ -19,7 +19,7 @@ RUN cd / \
 #  -- Ports for HTTP --
 EXPOSE 8888/tcp
 
-COPY jwt-server.sh /usr/local/bin
+COPY consume-jwt.sh /usr/local/bin
 COPY response.sh /usr/local/bin
 
-CMD ["jwt-server.sh"]
+CMD ["consume-jwt.sh"]
