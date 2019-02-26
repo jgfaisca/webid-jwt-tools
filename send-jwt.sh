@@ -20,7 +20,7 @@ if [ $# -ne 2 ]; then
 fi
 
 TMP_DIR="tmp/jwt
-JWT=$(cat $TMP_DIR/access_token)
+[ -r "$TMP_DIR/access_token" ] && JWT=$(cat $TMP_DIR/access_token) || error "$TMP_DIR/access_token"
 HOST="$1"
 PORT="$2"
 
