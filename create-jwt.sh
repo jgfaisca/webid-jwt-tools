@@ -26,7 +26,7 @@ WALLET_PW="secret"
 UNLOCK_SEC=10
 
 # get address value from NMC
-nshow=$(namecoin-cli -datadir=$DATADIR name_show "$iss")
+nshow=$(namecoin-cli -datadir=$DATA_DIR name_show "$iss")
 NMC_ADDRESS=$(echo $nshow | python -c "import sys, json; print json.load(sys.stdin)['address']")
 
 # create message
