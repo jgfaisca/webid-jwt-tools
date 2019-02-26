@@ -32,9 +32,13 @@ iss="$ISSUER"
 # create temporary directory
 [ -d "$TMP_DIR" ] || mkdir -p $TMP_DIR
 
-# create message
+# read configuration file(s)
 [ -r "$JWT_CONF_FILE" ] || error "$JWT_CONF_FILE"
+. $JWT_CONF_FILE
 [ -r "$DLT_CONF_FILE" ] || error "$DLT_CONF_FILE"
+. $DLT_CONF_FILE
+
+# create message
 [ -r "$HEADER_TEMPLATE" ] && cp $HEADER_TEMPLATE $TMP_DIR/header || error "$HEADER_TEMPLATE"
 [ -r "$PAYLOAD_TEMPLATE" ] && cp $PAYLOAD_TEMPLATE $TMP_DIR/payload || error "$PAYLOAD_TEMPLATE"
 replaceVar "ALGORITHM" ${ALGORITHM} $TMP_DIR/header
