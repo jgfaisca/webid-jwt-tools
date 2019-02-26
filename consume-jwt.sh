@@ -4,7 +4,7 @@
 #
 # Usage:
 # PATH=$PATH:$(pwd)
-# consume-jwt.sh [port]
+# consume-jwt.sh 
 #
 # Description:
 # Using the nc (Netcat) command for arbitrary TCP 
@@ -13,9 +13,9 @@
 
 # variables
 LOG_REQ="/tmp/requests.log" # requests log
-FIFO_OUT="/tmp/fifo_out" # named pipe
-PORT=${1:-8888} # local port number 
-ADDR="0.0.0.0" # local source address
+FIFO_OUT="/tmp/fifo_out"    # named pipe
+PORT="8888"                 # local port number 
+ADDR="0.0.0.0"              # local source address
 export LOG_REQ
 
 # create log file
