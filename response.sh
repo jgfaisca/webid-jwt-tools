@@ -66,32 +66,28 @@ if [ "$verify" == "true" ]; then
         <html>
         <head>
         <meta charset="UTF-8">
-        <title>Authentication Successfull</title>
+        <title>Protected Resource</title>
         </head>
         <body>
-	<h3>Protected Resource</h3>
-        <p>Hello $name, you have successfully logged in</p>
+	<h3>Success!</h3>
+        <p>Hello $name, you logged in</p>
         </body>
         </html>
 	_EOF_
-	#echo "Hello $name, you have successfully logged in!"
-	#exit 0
   else
   	cat <<- _EOF_
         <!DOCTYPE html>
         <html>
         <head>
         <meta charset="UTF-8">
-        <title>Authentication Error</title>
+        <title>Failed Login Attempt</title>
         </head>
         <body>
-        <h3>Authentication Error</h3>
+        <h3>Authentication Error!</h3>
 	</p>Please check your user id and and try again.</p>
         </body>
         </html>
 	_EOF_
-	#echo "Authentication failed!"
-	#exit 1
 fi
 
 exit 0
