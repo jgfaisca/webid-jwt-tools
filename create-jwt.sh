@@ -37,8 +37,12 @@ header=$(awk -v val="${ALGORITHM}" '{gsub("ALGORITHM",val); print}' $FILE0)
 echo $header > header
 payload=$(awk -v val="${ISSUER}" '{gsub("ISSUER",val); print}' $FILE1)
 echo $payload > payload
-DATE=$(perl -e '$x=time+(${HOURS}*3600);print $x')
-payload=$(awk -v val="${DATE}" '{gsub("EXPIRYDATE",val); print}' payload)
+if [ -z "$EXPIRYDATE" ]; then
+    DATE=$(perl -e '$x=time+(${HOURS}*3600);print $x')
+    payload=$(awk -v val="${DATE}" '{gsub("EXPIRYDATE",val); print}' payload)
+else
+    payload=$(awk -v val="${EXPIRYDATE}" '{gsub("EXPIRYDATE",val); print}' payload)
+fi
 echo $payload > payload
 message=$header.$payload 
 echo $message > message
