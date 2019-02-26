@@ -24,7 +24,7 @@ echo
 
 elements="${#jwt[@]}"
 if [ $elements -ne 3 ] ; then
-   echo "invalid token!"
+   echo "Error: invalid token!"
    exit 1
 fi
 
@@ -36,16 +36,16 @@ message="$header.$payload"
 # get the iss value
 iss=$(echo $payload | python -c "import sys, json; print json.load(sys.stdin)['iss']")
 if [ $? -ne 0 ]; then
-    echo "token doesn't contain the 'iss' value!"
+    echo "Error: the token doesn't contain the 'iss' value!"
     exit 1
 fi
 
 # get the exp value
 exp=$(echo $payload | python -c "import sys, json; print json.load(sys.stdin)['exp']")
-if [ $? -eq 0 ]; then # token contain the 'exp' value"
+if [ $? -eq 0 ]; then # token contains the 'exp' value"
     now=$(date +%s) # current time
     if [ $exp -le $now ]; then 
-    	echo "expired token!"
+    	echo "Error: expired token!"
 	exit 1
     fi	
 fi
