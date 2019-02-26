@@ -17,7 +17,7 @@ function error2(){
   exit 1
 }
 
-TMP_DIR="tmp/jwt"
+TMP_DIR="./tmp"
 CONF_DIR="conf"
 DLT_CONF_FILE="$CONF_DIR/dlt/wallet.conf"
 
