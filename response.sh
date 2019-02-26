@@ -62,31 +62,31 @@ verify=$(namecoin-cli -datadir=$NMC_DATA_DIR verifymessage $address $signature "
 
 if [ "$verify" == "true" ]; then
 	cat <<- _EOF_
-        <!DOCTYPE html>
-        <html>
-        <head>
-        <meta charset="UTF-8">
-        <title>Protected Resource</title>
-        </head>
-        <body>
-	<h3>Success!</h3>
-        <p>Hello $name, you logged in.</p>
-        </body>
-        </html>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+   <title>Protected Resource</title>
+</head>
+<body>
+   <h3>Success!</h3>
+   <p>Hello $name, you logged in.</p>
+</body>
+</html>
 	_EOF_
   else
   	cat <<- _EOF_
-        <!DOCTYPE html>
-        <html>
-        <head>
-        <meta charset="UTF-8">
-        <title>Failed Login Attempt</title>
-        </head>
-        <body>
-        <h3>Authentication Error!</h3>
-	</p>Please check your user id and and try again.</p>
-        </body>
-        </html>
+ <!DOCTYPE html>
+ <html>
+ <head>
+ <meta charset="UTF-8">
+    <title>Failed Login Attempt</title>
+ </head>
+ <body>
+    <h3>Authentication Error!</h3>
+    </p>Please check your user id and and try again.</p>
+ </body>
+ </html>
 	_EOF_
 fi
 
