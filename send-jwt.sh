@@ -4,6 +4,12 @@
 # Send JWT on the HTTP Authorization header 
 #
 
+# error function
+function error(){
+  echo "Error: File $1 not found."
+  exit 1
+}
+
 # chech arguments
 if [ $# -ne 2 ]; then
   echo
