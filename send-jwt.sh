@@ -13,7 +13,8 @@ if [ $# -ne 2 ]; then
   exit 1
 fi
 
-JWT=$(cat access_token)
+TMP_DIR="tmp/jwt
+JWT=$(cat $TMP_DIR/access_token)
 HOST="$1"
 PORT="$2"
 
