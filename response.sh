@@ -61,11 +61,35 @@ rm -f $tmpfile
 verify=$(namecoin-cli -datadir=$DATADIR verifymessage $address $signature "$message")
 
 if [ "$verify" == "true" ]; then
-	echo "Hello $name, you have successfully logged in!"
-	exit 0
+	cat <<- _EOF_
+        <!DOCTYPE html>
+        <html>
+        <head>
+        <meta charset="UTF-8">
+        <title>Protected Resource</title>
+        </head>
+        <body>
+        Hello $name, you have successfully logged in!
+        </body>
+        </html>
+	_EOF_
+	#echo "Hello $name, you have successfully logged in!"
+	#exit 0
   else
-	echo "Authentication failed!"
-	exit 1
+  	cat <<- _EOF_
+        <!DOCTYPE html>
+        <html>
+        <head>
+        <meta charset="UTF-8">
+        <title>Error</title>
+        </head>
+        <body>
+        Authentication failed!
+        </body>
+        </html>
+	_EOF_
+	#echo "Authentication failed!"
+	#exit 1
 fi
 
 exit 0
