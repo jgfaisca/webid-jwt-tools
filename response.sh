@@ -52,13 +52,13 @@ curl --silent --output $tmpfile ${IPFS_GW}${uri}
 name=$(sparql-triples-person.py $tmpfile)
 
 # use SPARQL to get wallet address from profile
-wallet=$(sparql-triples-wallet.py $tmpfile)
+address=$(sparql-triples-wallet.py $tmpfile)
 
 # remove temporary file
 rm -f $tmpfile
 
 # verify signature
-verify=$(namecoin-cli -datadir=$DATADIR verifymessage $wallet $signature $message)
+verify=$(namecoin-cli -datadir=$DATADIR verifymessage $address $signature "$message")
 
 if [ "$verify" == "true" ]; then
 	echo "Hello $name, you have successfully logged in!"
