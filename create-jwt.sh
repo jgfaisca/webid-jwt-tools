@@ -14,7 +14,7 @@ function error(){
 }
 
 # variables
-. /jwt.conf
+./jwt.conf
 iss="$ISSUER"
 NMC_ADDRESS=""
 #DATADIR="$HOME/.namecoin"
