@@ -55,14 +55,14 @@ echo $message > $TMP_DIR/message
 
 # get address value from NMC
 nshow=$(namecoin-cli -datadir=$NMC_DATA_DIR name_show "$ISSUER")
-NMC_ADDRESS=$(echo $nshow | python -c "import sys, json; print json.load(sys.stdin)['address']")
-echo $NMC_ADDRESS > $TMP_DIR/wallet_address
+wallet_address=$(echo $nshow | python -c "import sys, json; print json.load(sys.stdin)['address']")
+echo $wallet_address > $TMP_DIR/wallet_address
 
 # unlock wallet for n seconds
 namecoin-cli -datadir=$NMC_DATA_DIR walletpassphrase "${NMC_WALLET_PWD}" $NMC_UNLOCK_SEC &>/dev/null
 
 # sign message
-signature=$(namecoin-cli -datadir=$NMC_DATA_DIR signmessage "${NMC_ADDRESS}" "${message}") 
+signature=$(namecoin-cli -datadir=$NMC_DATA_DIR signmessage "${wallet_address}" "${message}") 
 
 # create unencoded_token
 unencoded_token="$message.$signature"
