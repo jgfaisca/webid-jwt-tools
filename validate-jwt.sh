@@ -50,7 +50,7 @@ elements="${#jwt[@]}"
 header=$(echo "${jwt[0]}" | base64 -d)
 payload=$(echo "${jwt[1]}" |base64 -d)
 signature=$(echo "${jwt[2]}" | base64 -d)
-#echo "$header.$payload.$signature"
+echo "$header.$payload.$signature"
 
 # create message
 message="$header.$payload"
