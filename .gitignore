@@ -4,3 +4,5 @@ header
 payload
 message
 tmp/
+conf/jwt/jwt.conf
+conf/dlt/wallet.conf
