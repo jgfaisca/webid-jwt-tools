@@ -27,7 +27,6 @@ JWT_CONF_FILE="$CONF_DIR/jwt/jwt.conf"
 HEADER_TEMPLATE="$CONF_DIR/jwt/header.template"
 PAYLOAD_TEMPLATE="$CONF_DIR/jwt/payload.template"
 DLT_CONF_FILE="$CONF_DIR/dlt/wallet.conf"
-iss="$ISSUER"
 
 # create temporary directory
 [ -d "$TMP_DIR" ] || mkdir -p $TMP_DIR
@@ -55,7 +54,7 @@ message=$header.$payload
 echo $message > $TMP_DIR/message
 
 # get address value from NMC
-nshow=$(namecoin-cli -datadir=$NMC_DATA_DIR name_show "$iss")
+nshow=$(namecoin-cli -datadir=$NMC_DATA_DIR name_show "$ISSUER")
 NMC_ADDRESS=$(echo $nshow | python -c "import sys, json; print json.load(sys.stdin)['address']")
 
 # unlock wallet for n seconds
