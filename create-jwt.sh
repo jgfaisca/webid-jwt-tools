@@ -18,7 +18,7 @@ function replaceVar(){
   VAR1="$1"
   VAR2="$2"
   FILE="$3"
-  evalCMD "perl -pi -e 's/$VAR1/$VAR2/g' $FILE"
+  evalCMD "perl -pi -e 's|${VAR1}|${VAR2}|g' $FILE"
 }
 
 # variables
@@ -41,17 +41,23 @@ NMC_ADDRESS=$(echo $nshow | python -c "import sys, json; print json.load(sys.std
 # create message
 [ ! -f $FILE0 ] && error 1
 [ ! -f $FILE1 ] && error 1
-header=$(awk -v val="${ALGORITHM}" '{gsub("ALGORITHM",val); print}' $FILE0)
-echo $header > header
-payload=$(awk -v val="${ISSUER}" '{gsub("ISSUER",val); print}' $FILE1)
-echo $payload > payload
+cp $FILE0 header
+#header=$(awk -v val="${ALGORITHM}" '{gsub("ALGORITHM",val); print}' $FILE0)
+repalceVar "ALGORITHM" ${ALGORITHM} header
+#echo $header > header
+cp $FILE1 payload
+#payload=$(awk -v val="${ISSUER}" '{gsub("ISSUER",val); print}' $FILE1)
+repalceVar "ISSUER" "${ISSUER}" payload
+#echo $payload > payload
 if [ -z "$EXPIRYDATE" ]; then
     DATE=$(perl -e '$x=time+(${HOURS}*3600);print $x')
-    payload=$(awk -v val="${DATE}" '{gsub("EXPIRYDATE",val); print}' payload)
+    #payload=$(awk -v val="${DATE}" '{gsub("EXPIRYDATE",val); print}' payload)
+    repalceVar "EXPIRYTDATE" "${DATE}" payload
 else
-    payload=$(awk -v val="${EXPIRYDATE}" '{gsub("EXPIRYDATE",val); print}' payload)
+    #payload=$(awk -v val="${EXPIRYDATE}" '{gsub("EXPIRYDATE",val); print}' payload)
+    repalceVar "EXPIRYTDATE" "${EXPIRYTDATE}" payload
 fi
-echo $payload > payload
+#echo $payload > payload
 message=$header.$payload 
 echo $message > message
 
