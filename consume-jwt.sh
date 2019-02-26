@@ -2,7 +2,6 @@
 #
 # JWT HTTP server (Token Consumer)
 #
-#
 # Usage:
 # PATH=$PATH:$(pwd)
 # consume-jwt.sh [port]
