@@ -1,8 +1,5 @@
 #!/bin/bash
 #
-# Usage:
-# ./validate.jwt <wallet_address>
-#
 # Description:
 # This script decode JWT and validate signature
 # Using the base64 command for decoding
@@ -10,7 +7,7 @@
 
 # error1 function
 function error1(){
-  echo "Error: File $1 not found."
+  echo "Error: The file $1 was not found."
   exit 1
 }
 
@@ -19,15 +16,6 @@ function error2(){
   echo "Error: Wrong number of JWT elements ($elements)"
   exit 1
 }
-
-# check arguments
-if [ $# -ne 1 ]; then
-  echo
-  echo "Invalid number of arguments."
-  echo "Usage: ./$(basename "$0") <wallet_address>"
-  echo
-  exit 1
-fi
 
 TMP_DIR="tmp/jwt"
 CONF_DIR="conf"
@@ -67,7 +55,7 @@ signature=$(echo "${jwt[2]}" | base64 -d)
 message="$header.$payload"
 
 # validate 
-echo $(namecoin-cli -datadir=$NMC_DATA_DIR verifymessage ${NMC_ADDRESS} ${signature} "${message}")
+echo $(namecoin-cli -datadir=$NMC_DATA_DIR verifymessage ${wallet_address} ${signature} "${message}")
 
 exit 0
 
