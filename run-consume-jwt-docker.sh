@@ -11,7 +11,7 @@ if [ -z "$1" ]; then
 fi
 
 # Docker image
-IMG="zekaf/jwt-server"
+IMG="zekaf/consume-jwt"
 TAG="latest"
 
 # Docker network
