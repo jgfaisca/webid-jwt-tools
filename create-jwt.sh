@@ -21,7 +21,7 @@ function replaceVar(){
 }
 
 # variables
-TMP_DIR="tmp/jwt
+TMP_DIR="tmp/jwt"
 CONF_DIR="conf"
 JWT_CONF_FILE="$CONF_DIR/jwt/jwt.conf"
 HEADER_TEMPLATE="$CONF_DIR/jwt/header.template"
