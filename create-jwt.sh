@@ -24,9 +24,9 @@ function replaceVar(){
 TMP_DIR="tmp/jwt
 CONF_DIR="conf"
 JWT_CONF_FILE="$CONF_DIR/jwt/jwt.conf"
+HEADER_TEMPLATE="$CONF_DIR/jwt/header.template"
+PAYLOAD_TEMPLATE="$CONF_DIR/jwt/payload.template"
 DLT_CONF_FILE="$CONF_DIR/dlt/wallet.conf"
-HEADER_TEMPLATE=
-PAYLOAD_TEMPLATE=
 iss="$ISSUER"
 
 # create temporary directory
@@ -37,9 +37,10 @@ nshow=$(namecoin-cli -datadir=$DATA_DIR name_show "$iss")
 NMC_ADDRESS=$(echo $nshow | python -c "import sys, json; print json.load(sys.stdin)['address']")
 
 # create message
-[ -r "$CONF_DIR/jwt/header.template" ] && cp $CONF_DIR/jwt/header.template $TMP_DIR/header || error "$CONF_DIR/jwt/header.template"
-[ -r "$CONF_DIR/jwt/payload.template" ] && cp $CONF_DIR/jwt/payload.template $TMP_DIR/payload || error "$CONF_DIR/jwt/payload.template"
-[ -r "$CONF_DIR/jwt/jwt.con" ] || error "$CONF_DIR/jwt/jwt.con
+[ -r "$HEADER_TEMPLATE" ] && cp $HEADER_TEMPLATE $TMP_DIR/header || error "$HEADER_TEMPLATE"
+[ -r "$PAYLOAD_TEMPLATE" ] && cp $PAYLOAD_TEMPLATE $TMP_DIR/payload || error "$PAYLOAD_TEMPLATE"
+[ -r "$JWT_CONF_FILE" ] || error "$JWT_CONF_FILE
+[ -r "$DLT_CONF_FILE" ] || error "$DLT_CONF_FILE
 replaceVar "ALGORITHM" ${ALGORITHM} $TMP_DIR/header
 replaceVar "ISSUER" "${ISSUER}" $TMP_DIR/payload
 if [ -z "$EXPIRYDATE" ]; then
