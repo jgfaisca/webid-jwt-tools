@@ -1,7 +1,6 @@
 # DLT configuration
 
 # --- namecoin ---
-#NMC_DATA_DIR="$HOME/.namecoin"
 NMC_DATA_DIR="/data/namecoin"
 NMC_WALLET_PWD="secret"
 NMC_UNLOCK_SEC=10
