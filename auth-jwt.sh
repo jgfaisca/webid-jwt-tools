@@ -24,4 +24,4 @@ TMP_DIR="tmp/jwt"
 HOST="$1"
 PORT="$2"
 
-curl -H "Authorization: Token ${JWT}" ${HOST}:${PORT} || printf '%s\n' $?
+curl -v -H "Authorization: Token ${JWT}" ${HOST}:${PORT} || printf '%s\n' $?
