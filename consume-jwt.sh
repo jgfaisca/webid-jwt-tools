@@ -15,7 +15,7 @@
 LOG_REQ="/tmp/requests.log" # requests log
 FIFO_OUT="/tmp/fifo_out" # named pipe
 PORT=${1:-8888} # local port number 
-ADDR="127.0.0.1" # local source address
+ADDR="0.0.0.0" # local source address
 export LOG_REQ
 
 # create log file
