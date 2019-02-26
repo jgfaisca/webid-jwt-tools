@@ -54,9 +54,10 @@ echo "$header.$payload.$signature"
 
 # create message
 message="$header.$payload"
+echo $message
 
 # validate 
-echo $(namecoin-cli -datadir=$DATA_DIR verifymessage ${NMC_ADDRESS} ${signature} ${message})
+echo $(namecoin-cli -datadir=$DATA_DIR verifymessage ${NMC_ADDRESS} ${signature} "${message}")
 
 exit 0
 
