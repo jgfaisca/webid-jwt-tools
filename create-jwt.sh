@@ -53,12 +53,14 @@ replaceVar "ISSUER" "${ISSUER}" payload
 if [ -z "$EXPIRYDATE" ]; then
     DATE=$(perl -e '$x=time+(${HOURS}*3600);print $x')
     #payload=$(awk -v val="${DATE}" '{gsub("EXPIRYDATE",val); print}' payload)
-    replaceVar "EXPIRYTDATE" "${DATE}" payload
+    replaceVar "EXPIRYDATE" "${DATE}" payload
 else
     #payload=$(awk -v val="${EXPIRYDATE}" '{gsub("EXPIRYDATE",val); print}' payload)
-    replaceVar "EXPIRYTDATE" "${EXPIRYTDATE}" payload
+    replaceVar "EXPIRYDATE" "${EXPIRYDATE}" payload
 fi
 #echo $payload > payload
+header=$(cat header)
+payload=$(cat payload)
 message=$header.$payload 
 echo $message > message
 
