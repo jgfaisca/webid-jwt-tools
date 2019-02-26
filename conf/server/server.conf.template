@@ -1,6 +1,0 @@
-# JWT server configuration
-
-PORT="8888"
-IPFS_GW="http://127.0.0.1:8080"
-LOG_REQ="/tmp/requests.log"
-NMC_DATA_DIR="$HOME/.namecoin"
