@@ -66,10 +66,11 @@ if [ "$verify" == "true" ]; then
         <html>
         <head>
         <meta charset="UTF-8">
-        <title>Protected Resource</title>
+        <title>Authentication Successfull</title>
         </head>
         <body>
-        Hello $name, you have successfully logged in!
+	<h3>Protected Resource</h3>
+        <p>Hello $name, you have successfully logged in</p>
         </body>
         </html>
 	_EOF_
@@ -81,10 +82,11 @@ if [ "$verify" == "true" ]; then
         <html>
         <head>
         <meta charset="UTF-8">
-        <title>Error</title>
+        <title>Authentication Error</title>
         </head>
         <body>
-        Authentication failed!
+        <h3>Authentication Error</h3>
+	</p>Please check your user id and and try again.</p>
         </body>
         </html>
 	_EOF_
