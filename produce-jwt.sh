@@ -43,8 +43,9 @@ DLT_CONF_FILE="$CONF_DIR/dlt/wallet.conf"
 replaceVar "ALGORITHM" ${ALGORITHM} $TMP_DIR/header
 replaceVar "ISSUER" "${ISSUER}" $TMP_DIR/payload
 if [ -z "$EXPIRYDATE" ]; then
-    DATE=$(perl -e '$x=time+(${HOURS}*3600);print $x')
-    replaceVar "EXPIRYDATE" "${DATE}" $TMP_DIR/payload
+    now=$(date +%s)
+    expiry_date=$(( ${now} + ${HOURS} * 3600 ))
+    replaceVar "EXPIRYDATE" "${expiry_date}" $TMP_DIR/payload
 else
     replaceVar "EXPIRYDATE" "${EXPIRYDATE}" $TMP_DIR/payload
 fi
