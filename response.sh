@@ -19,7 +19,6 @@ IFS='.' read -r -a jwt <<< "$access_token"
 
 echo -e "HTTP/1.1 200 OK\r"
 echo "Content-type: text/html"
-echo "Connection: close"
 echo "Allow: GET"
 echo
 
