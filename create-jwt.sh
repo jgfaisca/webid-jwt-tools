@@ -34,7 +34,12 @@ NMC_ADDRESS=$(echo $nshow | python -c "import sys, json; print json.load(sys.std
 [ ! -f $FILE0 ] && error 1
 [ ! -f $FILE1 ] && error 1
 header=$(awk -v val="${ALGORITHM}" '{gsub("ALGORITHM",val); print}' $FILE0)
+echo $header > header
 payload=$(awk -v val="${ISSUER}" '{gsub("ISSUER",val); print}' $FILE1)
+echo $payload > payload
+DATE=$(perl -e '$x=time+(${HOURS}*3600);print $x')
+payload=$(awk -v val="${DATE}" '{gsub("EXPIRYDATE",val); print}' payload)
+echo $payload > payload
 message=$header.$payload 
 echo $message > message
 
