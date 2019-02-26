@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # Usage:
-# ./validate.jwt <namecoin_address>
+# ./validate.jwt <wallet_address>
 #
 # Description:
 # This script decode JWT and validate signature
@@ -20,19 +20,25 @@ function error(){
 if [ $# -ne 1 ]; then
   echo
   echo "Invalid number of arguments."
-  echo "Usage: ./$(basename "$0") <namecoin_address>"
+  echo "Usage: ./$(basename "$0") <wallet_address>"
   echo
   exit 1
 fi
 
+TMP_DIR="tmp/jwt"
+CONF_DIR="conf"
+DLT_CONF_FILE="$CONF_DIR/dlt/wallet.conf"
+
+# read configuration file(s)
+[ -r "$DLT_CONF_FILE" ] || error 1
+. $DLT_CONF_FILE
+
 # variables
 NMC_ADDRESS="$1"
-#DATADIR="$HOME/.namecoin"
-DATA_DIR="/data/namecoin"
-FILE1="access_token"
+FILE1="$TMP_DIR/access_token"
 
 # read access_token
-[ -f $FILE1 ] && access_token=$(cat $FILE1) || error 1
+[ -r $FILE1 ] && access_token=$(cat $FILE1) || error 1
 
 # stripping the JWT parts header.payload.signature into an array
 declare -a jwt
@@ -56,7 +62,7 @@ signature=$(echo "${jwt[2]}" | base64 -d)
 message="$header.$payload"
 
 # validate 
-echo $(namecoin-cli -datadir=$DATA_DIR verifymessage ${NMC_ADDRESS} ${signature} "${message}")
+echo $(namecoin-cli -datadir=$NMC_DATA_DIR verifymessage ${NMC_ADDRESS} ${signature} "${message}")
 
 exit 0
 
