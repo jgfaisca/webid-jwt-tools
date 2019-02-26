@@ -40,6 +40,17 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
+# get the exp value
+exp=$(echo $payload | python -c "import sys, json; print json.load(sys.stdin)['exp']")
+if [ $? -eq 0 ]; then
+    # token contain the 'exp' value!"
+    now=$(date +%s)
+    if [ $exp -le $now ]; then 
+    	echo "expired token!"
+	exit 1
+    fi	
+fi
+
 # get the uri value from NMC
 nshow=$(namecoin-cli -datadir=$NMC_DATA_DIR name_show "$iss")
 out1=$(echo $nshow | python -c "import sys, json; print json.load(sys.stdin)['value']")
