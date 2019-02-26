@@ -18,7 +18,8 @@ function replaceVar(){
   VAR1="$1"
   VAR2="$2"
   FILE="$3"
-  evalCMD "perl -pi -e 's|${VAR1}|${VAR2}|g' $FILE"
+  CMD="perl -pi -e 's|${VAR1}|${VAR2}|g' $FILE"
+  eval $CMD
 }
 
 # variables
