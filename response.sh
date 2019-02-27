@@ -54,8 +54,8 @@ response_200(){
 	_EOF_
 }
 
-# status code 301 HTML response
-response_301(){
+# status code 403 HTML response
+response_403(){
 cat <<- _EOF_
  <!DOCTYPE html>
  <html>
@@ -143,10 +143,10 @@ verify=$(namecoin-cli -datadir=$NMC_DATA_DIR verifymessage $address $signature "
 
 if [ "$verify" == "true" ]; then
 	code_200
-	response_200 $name
+	response_200 "$name"
   else
 	code_403 "not authorized"
-  	response_300
+  	response_403
 fi
 
 exit 0
