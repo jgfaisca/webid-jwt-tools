@@ -16,7 +16,7 @@ code_200(){
 # respond with the HTTP 400 (Bad Request) status code
 code_400(){
    echo -e 'HTTP/1.1 400 Bad Request\r'
-   echo 'WWW-Authenticate: Bearer realm="example", error="invalid_request", error_description="$1"'
+   echo "WWW-Authenticate: Bearer realm='example', error='invalid_request', error_description='$1'"
    echo 'Content-type: text/html; charset=UTF-8'
    echo
 }
