@@ -6,13 +6,12 @@
 
 # respond with the HTTP 200 (OK) status code
 code_200(){
-   echo -e "HTTP/1.1 200 OK\r"
-   echo "Date: $(date)"
-   echo "Content-type: text/html; charset=UTF-8"
-   echo "Allow: GET"
+   echo -e 'HTTP/1.1 200 OK\r'
+   echo 'Date: $(date)'
+   echo 'Content-type: text/html; charset=UTF-8'
+   echo 'Allow: GET'
    echo
 }
-
 
 # respond with the HTTP 400 (Bad Request) status code
 code_400(){
@@ -79,6 +78,15 @@ LOG_REQ="/tmp/requests.log"
 NMC_DATA_DIR="$HOME/.namecoin"
 
 LAST_LINE_REQ=$(cat $LOG_REQ | tail -2)
+header1=$(echo $LAST_LINE_REQ | awk '{print $1}' | xargs)
+header2=$(echo $LAST_LINE_REQ | awk '{print $2}' | xargs)
+
+if [ "$header1" != "Authorization:" ] || [ "$header2" != "Bearer" ]; then
+   code_400 "request without authentication"
+   echo "400 (Bad Request)"
+   exit 1
+fi
+
 access_token=$(echo $LAST_LINE_REQ | awk '{print $3}' | xargs)
 
 # Stripping the JWT parts Header.Payload.Signature into an array
@@ -88,7 +96,6 @@ IFS='.' read -r -a jwt <<< "$access_token"
 # verify token
 elements="${#jwt[@]}"
 if [ $elements -ne 3 ] ; then
-   # invalid_request  
    code_400 "malformed"
    echo "400 (Bad Request)"
    exit 1
