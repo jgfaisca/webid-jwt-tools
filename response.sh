@@ -102,7 +102,6 @@ message="$header.$payload"
 # get the iss value
 iss=$(echo $payload | python -c "import sys, json; print json.load(sys.stdin)['iss']")
 if [ $? -ne 0 ]; then
-    # invalid_request
     code_400 "token missing iss value"
     echo "400 (Bad Request)"
     exit 1
@@ -113,7 +112,6 @@ exp=$(echo $payload | python -c "import sys, json; print json.load(sys.stdin)['e
 if [ $? -eq 0 ]; then # token contains the 'exp' value"
     now=$(date +%s) # current time
     if [ $exp -le $now ]; then 
-        # invalid_token
 	code_401 "expired token"
     	echo "401 (Unauthorized)"
 	exit 1
