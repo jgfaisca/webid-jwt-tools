@@ -8,16 +8,17 @@
 code_200(){
    echo -e "HTTP/1.1 200 OK\r"
    echo "Date: $(date)"
-   echo "Content-type: text/html"
+   echo "Content-type: text/html; charset=UTF-8"
    echo "Allow: GET"
    echo
 }
+
 
 # respond with the HTTP 400 (Bad Request) status code
 code_400(){
    echo -e "HTTP/1.1 400 Bad Request\r"
    echo "WWW-Authenticate: error='invalid_request', error_description='$1'"
-   echo "Content-type: text/html"
+   echo "Content-type: text/html; charset=UTF-8"
    echo
 }
 
@@ -25,7 +26,7 @@ code_400(){
 code_401(){
    echo -e "HTTP/1.1 401 Unauthorized\r"
    echo "WWW-Authenticate: error='invalid_token', error_description='$1'"
-   echo "Content-type: text/html"
+   echo "Content-type: text/html; charset=UTF-8"
    echo
 }
 
@@ -33,7 +34,7 @@ code_401(){
 code_403(){
    echo -e "HTTP/1.1 403 Forbidden\r"
    echo "WWW-Authenticate: error='insufficient_scope', error_description='$1'"
-   echo "Content-type: text/html"
+   echo "Content-type: text/html; charset=UTF-8"
    echo
 }
 
