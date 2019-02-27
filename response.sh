@@ -17,7 +17,7 @@ code_200(){
 # respond with the HTTP 400 (Bad Request) status code
 code_400(){
    echo -e "HTTP/1.1 400 Bad Request\r"
-   echo "WWW-Authenticate: error='invalid_request', error_description='$1'"
+   echo "WWW-Authenticate: Bearer realm="example", error='invalid_request', error_description='$1'"
    echo "Content-type: text/html; charset=UTF-8"
    echo
 }
@@ -25,7 +25,7 @@ code_400(){
 # respond with the HTTP 401 (Unauthorized) status code
 code_401(){
    echo -e "HTTP/1.1 401 Unauthorized\r"
-   echo "WWW-Authenticate: error='invalid_token', error_description='$1'"
+   echo "WWW-Authenticate: Bearer realm="example", error='invalid_token', error_description='$1'"
    echo "Content-type: text/html; charset=UTF-8"
    echo
 }
@@ -33,7 +33,7 @@ code_401(){
 # respond with the HTTP 403 (Forbidden) status code
 code_403(){
    echo -e "HTTP/1.1 403 Forbidden\r"
-   echo "WWW-Authenticate: error='insufficient_scope', error_description='$1'"
+   echo "WWW-Authenticate: Bearer realm="example", error='insufficient_scope', error_description='$1'"
    echo "Content-type: text/html; charset=UTF-8"
    echo
 }
