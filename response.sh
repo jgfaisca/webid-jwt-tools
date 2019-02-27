@@ -13,19 +13,19 @@ code_200(){
    echo
 }
 
-# in response to a protected resource request without authentication
-# respond with the HTTP 400 (Bad Request) status code
-code_400_no_auth(){
-   echo -e "HTTP/1.1 400 Bad Request\r"
-   echo "WWW-Authenticate: Bearer realm='example'"
-   echo "Content-type: text/html; charset=UTF-8"
-   echo
-}
-
 # respond with the HTTP 400 (Bad Request) status code
 code_400(){
    echo -e "HTTP/1.1 400 Bad Request\r"
    echo "WWW-Authenticate: Bearer realm='example', error='invalid_request', error_description='$1'"
+   echo "Content-type: text/html; charset=UTF-8"
+   echo
+}
+
+# in response to a protected resource request without authentication
+# respond with the HTTP 401 (Unauthorized) status code
+code_401_no_auth(){
+   echo -e "HTTP/1.1 401 Unauthorized\r"
+   echo "WWW-Authenticate: Bearer realm='example'"
    echo "Content-type: text/html; charset=UTF-8"
    echo
 }
@@ -95,7 +95,7 @@ header2=$(echo $LAST_LINE_REQ | awk '{print $2}' | xargs)
 
 # verify header values
 if [ "$header1" != "Authorization:" ] || [ "$header2" != "Bearer" ]; then
-   code_400_no_auth
+   code_401_no_auth
    echo "400 (Bad Request)"
    exit 1
 fi
@@ -124,7 +124,7 @@ message="$header.$payload"
 # get iss value
 iss=$(echo $payload | python -c "import sys, json; print json.load(sys.stdin)['iss']")
 if [ $? -ne 0 ]; then
-    code_400 "token missing iss value"
+    code_400 "missing iss value"
     echo "400 (Bad Request)"
     exit 1
 fi
@@ -134,7 +134,7 @@ exp=$(echo $payload | python -c "import sys, json; print json.load(sys.stdin)['e
 if [ $? -eq 0 ]; then # token contains the 'exp' value"
     now=$(date +%s) # current time
     if [ $exp -le $now ]; then 
-	code_401 "expired token"
+	code_401 "expired"
     	echo "401 (Unauthorized)"
 	exit 1
     fi	
