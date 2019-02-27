@@ -4,12 +4,73 @@
 #
 #
 
+# respond with the HTTP 200 (OK) status code
 code_200(){
    echo -e "HTTP/1.1 200 OK\r"
+   echo "Date: $(date)"
    echo "Content-type: text/html"
    echo "Allow: GET"
    echo
 }
+
+# respond with the HTTP 400 (Bad Request) status code
+code_400(){
+   echo -e "HTTP/1.1 400 Bad Request\r"
+   echo "WWW-Authenticate: error='invalid_request', error_description='$1'"
+   echo "Content-type: text/html"
+   echo
+}
+
+# respond with the HTTP 401 (Unauthorized) status code
+code_401(){
+   echo -e "HTTP/1.1 401 Unauthorized\r"
+   echo "WWW-Authenticate: error='invalid_token', error_description='$1'"
+   echo "Content-type: text/html"
+   echo
+}
+
+# respond with the HTTP 403 (Forbidden) status code
+code_403(){
+   echo -e "HTTP/1.1 403 Forbidden\r"
+   echo "WWW-Authenticate: error='insufficient_scope', error_description='$1'"
+   echo "Content-type: text/html"
+   echo
+}
+
+# status code 200 HTML response
+response_200(){
+	cat <<- _EOF_
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+   <title>Protected Resource</title>
+</head>
+<body>
+   <h3>Success!</h3>
+   <p>Hello $1, you logged in.</p>
+</body>
+</html>
+	_EOF_
+}
+
+# status code 301 HTML response
+response_301(){
+cat <<- _EOF_
+ <!DOCTYPE html>
+ <html>
+ <head>
+ <meta charset="UTF-8">
+    <title>Failed Login Attempt</title>
+ </head>
+ <body>
+    <h3>Authentication Error!</h3>
+    </p>Please check your user id and and try again.</p>
+ </body>
+ </html>
+	_EOF_
+}
+
 export PYTHONIOENCODING=utf8
 
 IPFS_GW="http://127.0.0.1:8080"
@@ -27,8 +88,8 @@ IFS='.' read -r -a jwt <<< "$access_token"
 elements="${#jwt[@]}"
 if [ $elements -ne 3 ] ; then
    # invalid_request  
-   # respond with the HTTP 400 (Bad Request) status code.
-   echo "Error: invalid token!"
+   code_400 "malformed"
+   echo "400 (Bad Request)"
    exit 1
 fi
 
@@ -41,9 +102,9 @@ message="$header.$payload"
 # get the iss value
 iss=$(echo $payload | python -c "import sys, json; print json.load(sys.stdin)['iss']")
 if [ $? -ne 0 ]; then
-    # invalid_token
-    # respond with the HTTP 401 (Unauthorized) status code
-    echo "Error: the token doesn't contain the 'iss' value!"
+    # invalid_request
+    code_400 "token missing iss value"
+    echo "400 (Bad Request)"
     exit 1
 fi
 
@@ -53,8 +114,8 @@ if [ $? -eq 0 ]; then # token contains the 'exp' value"
     now=$(date +%s) # current time
     if [ $exp -le $now ]; then 
         # invalid_token
-        # respond with the HTTP 401 (Unauthorized) status code
-    	echo "Error: expired token!"
+	code_401 "expired token"
+    	echo "401 (Unauthorized)"
 	exit 1
     fi	
 fi
@@ -82,35 +143,10 @@ verify=$(namecoin-cli -datadir=$NMC_DATA_DIR verifymessage $address $signature "
 
 if [ "$verify" == "true" ]; then
 	code_200
-	cat <<- _EOF_
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-   <title>Protected Resource</title>
-</head>
-<body>
-   <h3>Success!</h3>
-   <p>Hello $name, you logged in.</p>
-</body>
-</html>
-	_EOF_
+	response_200 $name
   else
-  	# insufficient_scope
-	# respond with the HTTP 403 (Forbidden) status code
-  	cat <<- _EOF_
- <!DOCTYPE html>
- <html>
- <head>
- <meta charset="UTF-8">
-    <title>Failed Login Attempt</title>
- </head>
- <body>
-    <h3>Authentication Error!</h3>
-    </p>Please check your user id and and try again.</p>
- </body>
- </html>
-	_EOF_
+	code_403 "not authorized"
+  	response_300
 fi
 
 exit 0
