@@ -22,12 +22,16 @@ echo "Content-type: text/html"
 echo "Allow: GET"
 echo
 
+# verify token
 elements="${#jwt[@]}"
 if [ $elements -ne 3 ] ; then
+   # invalid_request  
+   # respond with the HTTP 400 (Bad Request) status code.
    echo "Error: invalid token!"
    exit 1
 fi
 
+# JWT decode 
 header=$(echo "${jwt[0]}" | base64 -i -d)
 payload=$(echo "${jwt[1]}" |base64 -i -d)
 signature=$(echo "${jwt[2]}" | base64 -i -d)
@@ -36,6 +40,8 @@ message="$header.$payload"
 # get the iss value
 iss=$(echo $payload | python -c "import sys, json; print json.load(sys.stdin)['iss']")
 if [ $? -ne 0 ]; then
+    # invalid_token
+    # respond with the HTTP 401 (Unauthorized) status code
     echo "Error: the token doesn't contain the 'iss' value!"
     exit 1
 fi
@@ -45,6 +51,8 @@ exp=$(echo $payload | python -c "import sys, json; print json.load(sys.stdin)['e
 if [ $? -eq 0 ]; then # token contains the 'exp' value"
     now=$(date +%s) # current time
     if [ $exp -le $now ]; then 
+        # invalid_token
+        # respond with the HTTP 401 (Unauthorized) status code
     	echo "Error: expired token!"
 	exit 1
     fi	
@@ -86,6 +94,8 @@ if [ "$verify" == "true" ]; then
 </html>
 	_EOF_
   else
+  	# insufficient_scope
+	# respond with the HTTP 403 (Forbidden) status code
   	cat <<- _EOF_
  <!DOCTYPE html>
  <html>
