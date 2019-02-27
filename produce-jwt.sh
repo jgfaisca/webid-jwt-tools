@@ -44,7 +44,7 @@ replaceVar "ALGORITHM" ${ALGORITHM} $TMP_DIR/header
 replaceVar "ISSUER" "${ISSUER}" $TMP_DIR/payload
 if [ -z "$EXPIRYDATE" ]; then
     now=$(date +%s)
-    expiry_date=$(( ${now} + ${HOURS} * 3600 ))
+    expiry_date=$(( ${now} + ${MINUTES} * 60 ))
     replaceVar "EXPIRYDATE" "${expiry_date}" $TMP_DIR/payload
 else
     replaceVar "EXPIRYDATE" "${EXPIRYDATE}" $TMP_DIR/payload
