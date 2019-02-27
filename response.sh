@@ -47,13 +47,13 @@ code_403(){
 }
 
 # status code 200 HTML response
-response_200(){
+response_200_login(){
 	cat <<- _EOF_
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-   <title>Protected Resource</title>
+   <title>Successfull Login</title>
 </head>
 <body>
    <h3>Success!</h3>
@@ -64,7 +64,7 @@ response_200(){
 }
 
 # status code 200 HTML default response
-response_200(){
+response_200_access(){
 	cat <<- _EOF_
 <!DOCTYPE html>
 <html>
@@ -73,8 +73,8 @@ response_200(){
    <title>Protected Resource</title>
 </head>
 <body>
-   <h3>Success!</h3>
-   <p>Hello $1, you logged in.</p>
+   <h3>Wellcome!</h3>
+   <p>Hello $1, this is an example page.</p>
 </body>
 </html>
 	_EOF_
@@ -95,6 +95,16 @@ cat <<- _EOF_
  </body>
  </html>
 	_EOF_
+}
+
+# add token hash to cache
+add_to_cache(){
+   echo "{\"hash\":\"${TOKEN_HASH}\",\"iss\":\"$iss\",\"name\":\"$name\",\"uri\":\"$uri\"}" >> $TOKEN_CACHE_FILE
+}
+
+# remove token hash from cache
+remove_from_cache(){
+   perl -ni.bak -e "print unless /${TOKEN_HASH}/" ${TOKEN_CACHE_FILE}
 }
 
 # get typ value
@@ -141,14 +151,14 @@ get_iss(){
 
 # get exp value
 get_exp(){
+  cache=$1  
   exp=$(echo $payload | python -c "import sys, json; print json.load(sys.stdin)['exp']")
   if [ $? -eq 0 ]; then 
       now=$(date +%s) # current time
       if [ $exp -le $now ]; then 
 	  code_401 "expired"
     	  echo "401 (Unauthorized)"
-	  # remove token hash from cache
-	  perl -ni.bak -e "print unless /${TOKEN_HASH}/" ${TOKEN_CACHE_FILE}
+	  [ "$cache" == "true" ] && remove_from_cache
 	  exit 1
       fi	
   fi
@@ -167,6 +177,9 @@ typ=""
 alg=""
 iss=""
 exp=""
+name=""
+address=""
+uri=""
 
 # create token cache file
 if [ ! -f $TOKEN_CACHE_FILE ]; then
@@ -208,28 +221,24 @@ payload=$(echo "${jwt[1]}" |base64 -i -d)
 signature=$(echo "${jwt[2]}" | base64 -i -d)
 message="$header.$payload"
 
-# get JWT values
-#get_typ
-#get_alg
-#get_iss
-#get_exp
-
 # create token hash
 TOKEN_HASH=$(echo -n $access_token | sha1sum | awk '{print $1}' | xargs) 
 
 # is token hash in cache?
-if grep -Fxq "$TOKEN_HASH" $TOKEN_CACHE_FILE; then
-   # found
-   get_exp
-else
-   # not found	
-   get_typ
-   get_alg
-   get_iss
-   get_exp
-   # add token hash to cache
-   echo $TOKEN_HASH >> $TOKEN_CACHE_FILE
+TOKEN_CACHE=$(grep -F "$TOKEN_HASH" $TOKEN_CACHE_FILE)
+if [ $? -eq 0 ]; then # found
+   get_exp true
+   name=$(echo $TOKEN_CACHE | python -c "import sys, json; print json.load(sys.stdin)['name']")
+   code_200
+   response_200_access "$name"
+   exit 0
 fi
+
+# get token values
+get_typ
+get_alg
+get_iss
+get_exp false
 
 # get the uri value from NMC
 nshow=$(namecoin-cli -datadir=$NMC_DATA_DIR name_show "$iss")
@@ -254,10 +263,13 @@ verify=$(namecoin-cli -datadir=$NMC_DATA_DIR verifymessage $address $signature "
 
 if [ "$verify" == "true" ]; then
 	code_200
-	response_200 "$name"
+	response_200_login "$name"
+	add_to_cache
+	exit 0
   else
 	code_403 "not authorized"
   	response_403
+	exit 1
 fi
 
 exit 0
