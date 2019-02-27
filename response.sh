@@ -6,33 +6,42 @@
 
 # respond with the HTTP 200 (OK) status code
 code_200(){
-   echo -e 'HTTP/1.1 200 OK\r'
-   echo 'Date: $(date)'
-   echo 'Content-type: text/html; charset=UTF-8'
-   echo 'Allow: GET'
+   echo -e "HTTP/1.1 200 OK\r"
+   echo "Date: $(date)"
+   echo "Content-type: text/html; charset=UTF-8"
+   echo "Allow: GET"
+   echo
+}
+
+# in response to a protected resource request without authentication
+# respond with the HTTP 400 (Bad Request) status code
+code_400_no_auth(){
+   echo -e "HTTP/1.1 400 Bad Request\r"
+   echo "WWW-Authenticate: Bearer realm='example'"
+   echo "Content-type: text/html; charset=UTF-8"
    echo
 }
 
 # respond with the HTTP 400 (Bad Request) status code
 code_400(){
-   echo -e 'HTTP/1.1 400 Bad Request\r'
+   echo -e "HTTP/1.1 400 Bad Request\r"
    echo "WWW-Authenticate: Bearer realm='example', error='invalid_request', error_description='$1'"
-   echo 'Content-type: text/html; charset=UTF-8'
+   echo "Content-type: text/html; charset=UTF-8"
    echo
 }
 
 # respond with the HTTP 401 (Unauthorized) status code
 code_401(){
-   echo -e 'HTTP/1.1 401 Unauthorized\r'
-   echo 'WWW-Authenticate: Bearer realm="example", error="invalid_token", error_description="$1"'
-   echo 'Content-type: text/html; charset=UTF-8'
+   echo -e "HTTP/1.1 401 Unauthorized\r"
+   echo "WWW-Authenticate: Bearer realm='example', error='invalid_token', error_description='$1'"
+   echo "Content-type: text/html; charset=UTF-8"
    echo
 }
 
 # respond with the HTTP 403 (Forbidden) status code
 code_403(){
-   echo -e 'HTTP/1.1 403 Forbidden\r'
-   echo 'WWW-Authenticate: Bearer realm="example", error="insufficient_scope", error_description="$1"'
+   echo -e "HTTP/1.1 403 Forbidden\r"
+   echo "WWW-Authenticate: Bearer realm='example', error='insufficient_scope', error_description='$1'"
    echo "Content-type: text/html; charset=UTF-8"
    echo
 }
@@ -77,19 +86,24 @@ IPFS_GW="http://127.0.0.1:8080"
 LOG_REQ="/tmp/requests.log"
 NMC_DATA_DIR="$HOME/.namecoin"
 
+# get log last line
 LAST_LINE_REQ=$(cat $LOG_REQ | tail -2)
+
+# get header values
 header1=$(echo $LAST_LINE_REQ | awk '{print $1}' | xargs)
 header2=$(echo $LAST_LINE_REQ | awk '{print $2}' | xargs)
 
+# verify header values
 if [ "$header1" != "Authorization:" ] || [ "$header2" != "Bearer" ]; then
-   code_400 "request without authentication"
+   code_400_no_auth
    echo "400 (Bad Request)"
    exit 1
 fi
 
+# get access_token
 access_token=$(echo $LAST_LINE_REQ | awk '{print $3}' | xargs)
 
-# Stripping the JWT parts Header.Payload.Signature into an array
+# stripping the JWT parts Header.Payload.Signature into an array
 declare -a jwt
 IFS='.' read -r -a jwt <<< "$access_token"
 
@@ -107,7 +121,7 @@ payload=$(echo "${jwt[1]}" |base64 -i -d)
 signature=$(echo "${jwt[2]}" | base64 -i -d)
 message="$header.$payload"
 
-# get the iss value
+# get iss value
 iss=$(echo $payload | python -c "import sys, json; print json.load(sys.stdin)['iss']")
 if [ $? -ne 0 ]; then
     code_400 "token missing iss value"
@@ -115,7 +129,7 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-# get the exp value
+# get exp value
 exp=$(echo $payload | python -c "import sys, json; print json.load(sys.stdin)['exp']")
 if [ $? -eq 0 ]; then # token contains the 'exp' value"
     now=$(date +%s) # current time
