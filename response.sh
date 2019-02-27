@@ -99,7 +99,8 @@ cat <<- _EOF_
 
 # add token hash to cache
 add_to_cache(){
-   echo "{\"hash\":\"${TOKEN_HASH}\",\"iss\":\"$iss\",\"name\":\"$name\",\"uri\":\"$uri\"}" >> $TOKEN_CACHE_FILE
+   echo "{\"hash\":\"${TOKEN_HASH}\",\"iss\":\"$iss\",\
+\"exp\":\"$exp\",\"name\":\"$name\",\"uri\":\"$uri\"}" >> $TOKEN_CACHE_FILE
 }
 
 # remove token hash from cache
