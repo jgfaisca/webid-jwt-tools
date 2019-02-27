@@ -4,6 +4,12 @@
 #
 #
 
+code_200(){
+   echo -e "HTTP/1.1 200 OK\r"
+   echo "Content-type: text/html"
+   echo "Allow: GET"
+   echo
+}
 export PYTHONIOENCODING=utf8
 
 IPFS_GW="http://127.0.0.1:8080"
@@ -16,11 +22,6 @@ access_token=$(echo $LAST_LINE_REQ | awk '{print $3}' | xargs)
 # Stripping the JWT parts Header.Payload.Signature into an array
 declare -a jwt
 IFS='.' read -r -a jwt <<< "$access_token"
-
-echo -e "HTTP/1.1 200 OK\r"
-echo "Content-type: text/html"
-echo "Allow: GET"
-echo
 
 # verify token
 elements="${#jwt[@]}"
@@ -80,6 +81,7 @@ rm -f $tmpfile
 verify=$(namecoin-cli -datadir=$NMC_DATA_DIR verifymessage $address $signature "$message")
 
 if [ "$verify" == "true" ]; then
+	code_200
 	cat <<- _EOF_
 <!DOCTYPE html>
 <html>
