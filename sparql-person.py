@@ -1,6 +1,8 @@
 #!/usr/bin/python
+#
 # dependencies:
 # pip install rdfextras rdflib
+#
 
 import sys
 import rdflib
@@ -26,3 +28,4 @@ for row in g.query(qres):
         print("%s" % row)
 
 g.close()
+
