@@ -1,6 +1,8 @@
 #!/usr/bin/python
+#
 # dependencies:
 # pip install rdfextras rdflib
+#
 
 import sys
 import rdflib
