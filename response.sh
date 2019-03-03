@@ -56,7 +56,7 @@ response_200(){
 </head>
 <body>
    <h3>Wellcome!</h3>
-   <p>Hello $1, this is an example page.</p>
+   <p>Hello $1, this is a protected resource.</p>
 </body>
 </html>
 	_EOF_
