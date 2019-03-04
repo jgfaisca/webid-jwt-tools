@@ -232,11 +232,11 @@ uri=$(echo $out1 | python -c "import sys, json; print json.load(sys.stdin)['uri'
 tmpfile=$(mktemp /tmp/profile_XXXXXX)
 curl --silent --output $tmpfile ${IPFS_GW}${uri}
 
-# use SPARQL to get person name from profile
-name=$(sparql-triples-person.py $tmpfile)
+# use SPARQL to get maker name from profile
+name=$(triples-person.py $tmpfile)
 
 # use SPARQL to get wallet address from profile
-address=$(sparql-triples-wallet.py $tmpfile)
+address=$(triples-wallet.py $tmpfile "namecoin:")
 
 # remove temporary file
 rm -f $tmpfile
