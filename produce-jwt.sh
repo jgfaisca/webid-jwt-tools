@@ -37,7 +37,10 @@ DLT_CONF_FILE="$CONF_DIR/dlt/wallet.conf"
 [ -r "$DLT_CONF_FILE" ] || error "$DLT_CONF_FILE"
 . $DLT_CONF_FILE
 
-[[ $DLT != "namecoin" ]] && echo "$DLT is not supported"; exit 1
+if [ $DLT != "namecoin" ]; then 
+  echo "$DLT is not supported"
+  exit 1
+fi
 
 # create message
 [ -r "$HEADER_TEMPLATE" ] && cp $HEADER_TEMPLATE $TMP_DIR/header || error "$HEADER_TEMPLATE"
