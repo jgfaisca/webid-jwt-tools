@@ -1,21 +1,31 @@
 #!/usr/bin/python
 #
-# dependencies:
+# Description:
+# OnlineAccount accountName(s) of the document author
+#
+# Usage:
+# ./sparwl-wallet.py <rdf_file> <network>
+#
+# Example:
+# ./sparwl-wallet.py "bob.rdf" "namecoin:"
+#
+# Dependencies:
 # pip install rdfextras rdflib
 #
 
 import sys
 import rdflib
 from rdflib import Graph
+from rdflib.plugins.sparql import prepareQuery
+from rdflib.namespace import FOAF
 
-profile_doc = sys.argv[1] 
-expStr = sys.argv[2] 
+profile_doc = sys.argv[1]
+expStr = sys.argv[2]
 
 g = Graph()
 g.parse(profile_doc)
 
-# OnlineAccount accountName(s) of the document author
-qres = g.query(
+qres = prepareQuery(
    """SELECT DISTINCT ?oan
       WHERE {
         ?doc rdf:type foaf:PersonalProfileDocument ;
@@ -24,9 +34,9 @@ qres = g.query(
         ?account rdf:type foaf:OnlineAccount .
         ?account foaf:accountName ?oan .
         FILTER regex(str(?oan), '"""+expStr+"""', "i")
-      }""")
+      }""", initNs = {'foaf':FOAF})
 
-for row in qres:
+for row in g.query(qres):
     network,address = str(row[0]).split(':')
     print (address)
 
