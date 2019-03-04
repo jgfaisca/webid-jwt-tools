@@ -37,11 +37,14 @@ DLT_CONF_FILE="$CONF_DIR/dlt/wallet.conf"
 [ -r "$DLT_CONF_FILE" ] || error "$DLT_CONF_FILE"
 . $DLT_CONF_FILE
 
+[[ $DLT != "namecoin" ]] && echo "$DLT is not supported"; exit 1
+
 # create message
 [ -r "$HEADER_TEMPLATE" ] && cp $HEADER_TEMPLATE $TMP_DIR/header || error "$HEADER_TEMPLATE"
 [ -r "$PAYLOAD_TEMPLATE" ] && cp $PAYLOAD_TEMPLATE $TMP_DIR/payload || error "$PAYLOAD_TEMPLATE"
 replaceVar "ALGORITHM" ${ALGORITHM} $TMP_DIR/header
 replaceVar "ISSUER" "${ISSUER}" $TMP_DIR/payload
+replaceVar "DLT" "${DLT}" $TMP_DIR/payload
 if [ -z "$EXPIRYDATE" ]; then
     now=$(date +%s)
     expiry_date=$(( ${now} + ${MINUTES} * 60 ))
