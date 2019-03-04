@@ -10,7 +10,6 @@
 import sys
 import rdflib
 from rdflib import Graph
-from rdflib import URIRef
 from rdflib.namespace import FOAF
 
 profile_doc = sys.argv[1] 
