@@ -25,3 +25,4 @@ for subj, pred, obj in g.triples((None,FOAF.accountName,None)):
        print(address)
 
 g.close()
+
