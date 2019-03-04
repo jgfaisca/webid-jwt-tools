@@ -64,7 +64,7 @@ response_200(){
 
 # status code 403 HTML response
 response_403(){
-cat <<- _EOF_
+	cat <<- _EOF_
  <!DOCTYPE html>
  <html>
  <head>
