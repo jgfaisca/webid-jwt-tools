@@ -4,7 +4,7 @@
 # OnlineAccount accountName(s) of the document author
 #
 # Usage:
-# ./sparwl-wallet.py <rdf_file> <network>
+# ./sparwl-wallet.py <rdf_file> <dlt_name>
 #
 # Example:
 # ./sparwl-wallet.py "bob.rdf" "namecoin:"
@@ -37,7 +37,7 @@ qres = prepareQuery(
       }""", initNs = {'foaf':FOAF})
 
 for row in g.query(qres):
-    network,address = str(row[0]).split(':')
+    dlt,address = str(row[0]).split(':')
     print (address)
 
 g.close()
