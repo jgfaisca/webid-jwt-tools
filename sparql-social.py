@@ -1,7 +1,7 @@
 #!/usr/bin/python
 #
 # Description
-# Document maker social relations
+# Document maker social graph relations 
 #
 # Dependencies:
 # pip install rdfextras rdflib
