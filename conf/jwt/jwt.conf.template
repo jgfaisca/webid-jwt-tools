@@ -6,8 +6,8 @@ ALGORITHM="ES256"         # alg - Identifies an algorithm to verify the signatur
 
 # --- payload ---
 ISSUER="id/name"          # iss - Identifies principal that issued the JWT
-DLT="namecoin"
 #EXPIRYDATE="1506772800"  # exp - Identifies the expiration time 
+DLT="namecoin"            # dlt - Identifies the Distributed Ladger
 
 # --- exp ---
 MINUTES=30                 # Adding time (minutes) to current date
