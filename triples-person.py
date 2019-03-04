@@ -25,3 +25,4 @@ for subj, pred, obj in g.triples((uri,FOAF.name,None)):
    print(obj)
 
 g.close()
+
