@@ -25,6 +25,12 @@ DLT_CONF_FILE="$CONF_DIR/dlt/wallet.conf"
 [ -r "$DLT_CONF_FILE" ] || error1 "$DLT_CONF_FILE"
 . $DLT_CONF_FILE
 
+# verify DLT support
+if [ $DLT != "namecoin" ]; then 
+  echo "$DLT is not supported"
+  exit 1
+fi
+
 # read wallet address 
 WALLET_ADDRESS_FILE="$TMP_DIR/wallet_address"
 [ -r $WALLET_ADDRESS_FILE ] && wallet_address=$(cat $WALLET_ADDRESS_FILE) || error1 $WALLET_ADDRESS_FILE 
