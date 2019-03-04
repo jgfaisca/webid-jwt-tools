@@ -1,6 +1,9 @@
 #!/usr/bin/python
 #
-# dependencies:
+# Description
+# Document maker social relations
+#
+# Dependencies:
 # pip install rdfextras rdflib
 #
 
@@ -16,15 +19,14 @@ g = Graph()
 g.parse(profile_doc)
 
 qres = prepareQuery(
-   """SELECT DISTINCT ?name
-      WHERE {
-        ?doc rdf:type foaf:PersonalProfileDocument ;
-        foaf:maker ?author .
-        ?author foaf:name ?name .
-      }""", initNs = {'foaf':FOAF})
+    """SELECT DISTINCT ?aname ?bname
+       WHERE {
+          ?a foaf:knows ?b .
+          ?a foaf:name ?aname .
+          ?b foaf:name ?bname .
+       }""", initNs = {'foaf':FOAF})
 
 for row in g.query(qres):
-        print("%s" % row)
+    print("%s knows %s" % row)
 
 g.close()
-

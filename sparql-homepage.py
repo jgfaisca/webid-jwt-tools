@@ -16,15 +16,15 @@ g = Graph()
 g.parse(profile_doc)
 
 qres = prepareQuery(
-   """SELECT DISTINCT ?name
+   """SELECT DISTINCT ?homepage
       WHERE {
         ?doc rdf:type foaf:PersonalProfileDocument ;
         foaf:maker ?author .
-        ?author foaf:name ?name .
+        ?author foaf:homepage ?homepage .
       }""", initNs = {'foaf':FOAF})
 
 for row in g.query(qres):
-        print("%s" % row)
+    print("%s" % row)
 
 g.close()
 

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+	xmlns:foaf="http://xmlns.com/foaf/0.1/"
+        xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+	xmlns:cc="https://w3id.org/cc#">
+  <rdf:Description rdf:about="#me">
+	<rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Person"/>
+	<foaf:name>Alice</foaf:name>
+	<foaf:homepage rdf:resource="http://alice-demo.bit"/>
+	<foaf:knows>
+           <foaf:Person>
+           <foaf:name>Bob</foaf:name>
+           <rdfs:seeAlso
+             rdf:resource="/ipns/QmNu6s21WByZxeuiJjgkks4ipiRgq7JrgG4w82fjPXxLBG/bob.rdf"/>
+           </foaf:Person>
+        </foaf:knows>	        
+	<cc:wallet>namecoin:N26A3BMyg3czVN7CAQesLM4tdQoNGuFEMw</cc:wallet>
+  </rdf:Description>
+</rdf:RDF>
+

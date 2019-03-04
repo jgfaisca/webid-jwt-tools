@@ -2,7 +2,6 @@
 #
 # Build the HTTP server response
 #
-#
 
 # respond with the HTTP 200 (OK) status code
 code_200(){
@@ -46,25 +45,8 @@ code_403(){
    echo
 }
 
-# status code 200 HTML response
-response_200_login(){
-	cat <<- _EOF_
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-   <title>Successfull Login</title>
-</head>
-<body>
-   <h3>Success!</h3>
-   <p>Hello $1, you logged in.</p>
-</body>
-</html>
-	_EOF_
-}
-
 # status code 200 HTML default response
-response_200_access(){
+response_200(){
 	cat <<- _EOF_
 <!DOCTYPE html>
 <html>
@@ -74,7 +56,7 @@ response_200_access(){
 </head>
 <body>
    <h3>Wellcome!</h3>
-   <p>Hello $1, this is an example page.</p>
+   <p>Hello $1, this is a protected resource.</p>
 </body>
 </html>
 	_EOF_
@@ -99,8 +81,8 @@ cat <<- _EOF_
 
 # add token hash to cache
 add_to_cache(){
-   echo "{\"hash\":\"${TOKEN_HASH}\",\"iss\":\"$iss\",\
-\"exp\":\"$exp\",\"name\":\"$name\",\"uri\":\"$uri\"}" >> $TOKEN_CACHE_FILE
+   echo "{\"hash\":\"${TOKEN_HASH}\",\"exp\":\"$exp\",\
+\"name\":\"$name\",\"uri\":\"$uri\"}" >> $TOKEN_CACHE_FILE
 }
 
 # remove token hash from cache
@@ -231,7 +213,7 @@ if [ $? -eq 0 ]; then # found
    get_exp true
    name=$(echo $TOKEN_CACHE | python -c "import sys, json; print json.load(sys.stdin)['name']")
    code_200
-   response_200_access "$name"
+   response_200 "$name"
    exit 0
 fi
 
@@ -250,11 +232,11 @@ uri=$(echo $out1 | python -c "import sys, json; print json.load(sys.stdin)['uri'
 tmpfile=$(mktemp /tmp/profile_XXXXXX)
 curl --silent --output $tmpfile ${IPFS_GW}${uri}
 
-# use SPARQL to get person name from profile
-name=$(sparql-triples-person.py $tmpfile)
+# use SPARQL to get maker name from profile
+name=$(triples-person.py $tmpfile)
 
 # use SPARQL to get wallet address from profile
-address=$(sparql-triples-wallet.py $tmpfile)
+address=$(triples-wallet.py $tmpfile "namecoin:")
 
 # remove temporary file
 rm -f $tmpfile
@@ -264,7 +246,7 @@ verify=$(namecoin-cli -datadir=$NMC_DATA_DIR verifymessage $address $signature "
 
 if [ "$verify" == "true" ]; then
 	code_200
-	response_200_login "$name"
+	response_200 "$name"
 	add_to_cache
 	exit 0
   else
