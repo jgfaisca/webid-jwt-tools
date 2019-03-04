@@ -133,7 +133,11 @@ get_iss(){
 # get exp value
 get_exp(){
   cache=$1  
-  exp=$(echo $payload | python -c "import sys, json; print json.load(sys.stdin)['exp']")
+  if [ "$cache" == "true" ]; then
+     exp=$(echo $TOKEN_CACHE | python -c "import sys, json; print json.load(sys.stdin)['exp']")
+  else
+     exp=$(echo $payload | python -c "import sys, json; print json.load(sys.stdin)['exp']")
+  fi
   if [ $? -eq 0 ]; then 
       now=$(date +%s) # current time
       if [ $exp -le $now ]; then 
