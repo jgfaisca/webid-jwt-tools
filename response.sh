@@ -147,6 +147,16 @@ get_exp(){
   fi
 }
 
+# get dlt value
+get_dlt(){
+  dlt=$(echo $payload | python -c "import sys, json; print json.load(sys.stdin)['dlt']")
+  if [ $? -ne 0 ]; then	
+      code_400 "missing dlt value"
+      echo "400 (Bad Request)"
+      exit 1
+  fi
+}
+
 export PYTHONIOENCODING=utf8
 
 # variables
@@ -222,6 +232,7 @@ get_typ
 get_alg
 get_iss
 get_exp false
+get_dlt
 
 # get the uri value from NMC
 nshow=$(namecoin-cli -datadir=$NMC_DATA_DIR name_show "$iss")
@@ -232,11 +243,11 @@ uri=$(echo $out1 | python -c "import sys, json; print json.load(sys.stdin)['uri'
 tmpfile=$(mktemp /tmp/profile_XXXXXX)
 curl --silent --output $tmpfile ${IPFS_GW}${uri}
 
-# use SPARQL to get maker name from profile
+# use SPARQL/triples to get maker name from profile
 name=$(triples-person.py $tmpfile)
 
-# use SPARQL to get wallet address from profile
-address=$(triples-wallet.py $tmpfile "namecoin:")
+# use SPARQL/triple to get wallet address from profile
+address=$(triples-wallet.py $tmpfile "${dlt}:")
 
 # remove temporary file
 rm -f $tmpfile
