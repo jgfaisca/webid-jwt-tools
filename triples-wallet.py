@@ -20,7 +20,7 @@ g.parse(profile_doc)
 
 for subj, pred, obj in g.triples((None,FOAF.accountName,None)):
     if obj.startswith(expStr):
-       network,address = obj.split(":")
+       dlt,address = obj.split(":")
        print(address)
 
 g.close()
