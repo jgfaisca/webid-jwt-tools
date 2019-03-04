@@ -37,6 +37,7 @@ DLT_CONF_FILE="$CONF_DIR/dlt/wallet.conf"
 [ -r "$DLT_CONF_FILE" ] || error "$DLT_CONF_FILE"
 . $DLT_CONF_FILE
 
+# verify DLT support
 if [ $DLT != "namecoin" ]; then 
   echo "$DLT is not supported"
   exit 1
