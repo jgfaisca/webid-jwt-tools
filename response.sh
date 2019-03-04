@@ -97,13 +97,12 @@ get_typ(){
       code_400 "missing typ value"
       echo "400 (Bad Request)"
       exit 1
-  else
-     if [ "$typ" != "$VALID_TYP" ]; then     
-        code_400 "unsuported typ"
-        echo "400 (Bad Request)"
-        exit 1
-   fi
-fi
+  fi
+  if [ "$typ" != "$VALID_TYP" ]; then     
+      code_400 "unsuported typ"
+      echo "400 (Bad Request)"
+      exit 1
+  fi
 }
 
 # get alg value
@@ -113,12 +112,11 @@ get_alg(){
       code_400 "missing alg value"
       echo "400 (Bad Request)"
       exit 1
-  else
-     if [ "$alg" != "$VALID_ALG" ]; then     
-        code_400 "unsuported alg value"
-        echo "400 (Bad Request)"
-        exit 1
-     fi
+  fi
+  if [ "$alg" != "$VALID_ALG" ]; then     
+      code_400 "unsuported alg value"
+      echo "400 (Bad Request)"
+      exit 1
   fi
 }
 
@@ -155,7 +153,7 @@ get_dlt(){
       echo "400 (Bad Request)"
       exit 1
   fi 
-  if [ $dlt != "namecoin" ]; then 
+  if [ "$dlt" != "$VALID_DLT" ]; then 
       code_400 "${dlt} is not supported"
       echo "400 (Bad Request)"
       exit 1
@@ -171,6 +169,7 @@ NMC_DATA_DIR="$HOME/.namecoin"
 TOKEN_CACHE_FILE="/tmp/token_cache.dat"
 VALID_ALG="ES256"
 VALID_TYP="JWT"
+VALID_DLT="namecoin"
 typ=""
 alg=""
 iss=""
@@ -202,6 +201,19 @@ fi
 # get access_token
 access_token=$(echo $LAST_LINE_REQ | awk '{print $3}' | xargs)
 
+# create token hash
+TOKEN_HASH=$(echo -n $access_token | sha1sum | awk '{print $1}' | xargs) 
+
+# is token hash in cache?
+TOKEN_CACHE=$(grep -F "$TOKEN_HASH" $TOKEN_CACHE_FILE)
+if [ $? -eq 0 ]; then # found
+   get_exp true
+   name=$(echo $TOKEN_CACHE | python -c "import sys, json; print json.load(sys.stdin)['name']")
+   code_200
+   response_200 "$name"
+   exit 0
+fi
+
 # stripping the JWT parts Header.Payload.Signature into an array
 declare -a jwt
 IFS='.' read -r -a jwt <<< "$access_token"
@@ -219,19 +231,6 @@ header=$(echo "${jwt[0]}" | base64 -i -d)
 payload=$(echo "${jwt[1]}" |base64 -i -d)
 signature=$(echo "${jwt[2]}" | base64 -i -d)
 message="$header.$payload"
-
-# create token hash
-TOKEN_HASH=$(echo -n $access_token | sha1sum | awk '{print $1}' | xargs) 
-
-# is token hash in cache?
-TOKEN_CACHE=$(grep -F "$TOKEN_HASH" $TOKEN_CACHE_FILE)
-if [ $? -eq 0 ]; then # found
-   get_exp true
-   name=$(echo $TOKEN_CACHE | python -c "import sys, json; print json.load(sys.stdin)['name']")
-   code_200
-   response_200 "$name"
-   exit 0
-fi
 
 # get token values
 get_typ
