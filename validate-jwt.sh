@@ -22,8 +22,16 @@ CONF_DIR="conf"
 DLT_CONF_FILE="$CONF_DIR/dlt/wallet.conf"
 
 # read configuration file(s)
-[ -r "$DLT_CONF_FILE" ] || error1 "$DLT_CONF_FILE"
+[ -r "$JWT_CONF_FILE" ] || error "$JWT_CONF_FILE"
+. $JWT_CONF_FILE
+[ -r "$DLT_CONF_FILE" ] || error "$DLT_CONF_FILE"
 . $DLT_CONF_FILE
+
+# verify DLT support
+if [ $DLT != "namecoin" ]; then 
+  echo "$DLT is not supported"
+  exit 1
+fi
 
 # read wallet address 
 WALLET_ADDRESS_FILE="$TMP_DIR/wallet_address"
@@ -39,17 +47,10 @@ IFS='.' read -r -a jwt <<< "$access_token"
 elements="${#jwt[@]}"
 [ $elements -ne 3 ] && error2
 
-# print the jwt array
-#for index in "${!jwt[@]}"
-#do
-#    echo "$index ${jwt[index]}"
-#done
-
 # decode header.payload.signature 
 header=$(echo "${jwt[0]}" | base64 -d)
 payload=$(echo "${jwt[1]}" |base64 -d)
 signature=$(echo "${jwt[2]}" | base64 -d)
-#echo "$header.$payload.$signature"
 
 # create message
 message="$header.$payload"
