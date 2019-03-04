@@ -22,7 +22,9 @@ CONF_DIR="conf"
 DLT_CONF_FILE="$CONF_DIR/dlt/wallet.conf"
 
 # read configuration file(s)
-[ -r "$DLT_CONF_FILE" ] || error1 "$DLT_CONF_FILE"
+[ -r "$JWT_CONF_FILE" ] || error "$JWT_CONF_FILE"
+. $JWT_CONF_FILE
+[ -r "$DLT_CONF_FILE" ] || error "$DLT_CONF_FILE"
 . $DLT_CONF_FILE
 
 # verify DLT support
