@@ -154,6 +154,11 @@ get_dlt(){
       code_400 "missing dlt value"
       echo "400 (Bad Request)"
       exit 1
+  fi 
+  if [ $dlt != "namecoin" ]; then 
+      code_400 "${dlt} is not supported"
+      echo "400 (Bad Request)"
+      exit 1
   fi
 }
 
@@ -170,6 +175,7 @@ typ=""
 alg=""
 iss=""
 exp=""
+dlt=""
 name=""
 address=""
 uri=""
