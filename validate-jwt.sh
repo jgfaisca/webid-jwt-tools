@@ -20,6 +20,7 @@ function error2(){
 TMP_DIR="./tmp"
 CONF_DIR="conf"
 DLT_CONF_FILE="$CONF_DIR/dlt/wallet.conf"
+JWT_CONF_FILE="$CONF_DIR/jwt/jwt.conf"
 
 # read configuration file(s)
 [ -r "$JWT_CONF_FILE" ] || error "$JWT_CONF_FILE"
