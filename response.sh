@@ -256,7 +256,7 @@ curl --silent --output $tmpfile ${IPFS_GW}${uri}
 name=$(triples-person.py $tmpfile)
 
 # use SPARQL/triple to get wallet address from profile
-address=$(triples-wallet.py $tmpfile "${dlt}:")
+address=$(triples-accountName.py $tmpfile "${dlt}")
 
 # remove temporary file
 rm -f $tmpfile
