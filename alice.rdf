@@ -33,17 +33,15 @@
   <!-- Accounts -->
   <rdf:Description rdf:about="#me">
     <foaf:account>
-    <foaf:OnlineAccount 
-      rdf:about="https://namecha.in/address/N26A3BMyg3czVN7CAQesLM4tdQoNGuFEMw">
-        <foaf:accountName>namecoin:N26A3BMyg3czVN7CAQesLM4tdQoNGuFEMw</foaf:accountName>
-        <foaf:name>Namecoin</foaf:name>
+    <foaf:OnlineAccount rdf:about="NMC">
+        <foaf:accountName>N26A3BMyg3czVN7CAQesLM4tdQoNGuFEMw</foaf:accountName>
+        <foaf:name>namecoin</foaf:name>
     </foaf:OnlineAccount>
     </foaf:account>
     <foaf:account>
-    <foaf:OnlineAccount 
-      rdf:about="https://www.blockchain.com/btc/address/1FjRbBVkWVH4yR1PnvCL27L3BjaGiWfccD">
-        <foaf:accountName>bitcoin:1FjRbBVkWVH4yR1PnvCL27L3BjaGiWfccD</foaf:accountName>
-        <foaf:name>Bitcoin</foaf:name>
+    <foaf:OnlineAccount rdf:about="BTC">
+        <foaf:accountName>1FjRbBVkWVH4yR1PnvCL27L3BjaGiWfccD</foaf:accountName>
+        <foaf:name>bitcoin</foaf:name>
     </foaf:OnlineAccount>
     </foaf:account>	
   </rdf:Description>  
