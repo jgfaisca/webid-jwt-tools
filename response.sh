@@ -209,7 +209,7 @@ fi
 
 # verify exported AUTH variable
 if [ -z "${AUTH}" ]; then
-    # get request from log last line
+    # get authentication request from log last line
     AUTH=$(cat $LOG_REQ | tail -2)
 fi
 
