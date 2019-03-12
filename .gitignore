@@ -5,3 +5,6 @@ conf/jwt/*.conf
 conf/dlt/consumer/*.conf
 conf/dlt/producer/*.conf
 conf/dlt/*.conf
+conf/dlt/consumer/*.conf
+conf/dlt/producer/*.conf
+conf/dlt/*.conf

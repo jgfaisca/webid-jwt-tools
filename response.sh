@@ -147,7 +147,7 @@ get_exp(){
   fi
   if [ $? -eq 0 ]; then
       now=$(date +%s) # current time
-      if [ $exp -le $now ]; then
+      if [[ "$exp" -le "$now" ]]; then
 	  code_401 "expired"
     	  echo "401 (Unauthorized)"
 	  [ "$1" == "cache" ] && remove_from_cache
@@ -171,12 +171,28 @@ get_dlt(){
   fi
 }
 
+# get dsn value
+get_dsn(){
+  dsn=$(echo $payload | python -c "import sys, json; print json.load(sys.stdin)['dsn']" 2>&1 >/dev/null)
+  if [ $? -ne 0 ]; then
+      code_400 "missing dsn value"
+      echo "400 (Bad Request)"
+      exit 1
+  fi
+  if [ "$dsn" != "$VALID_DSN" ]; then
+      code_400 "${dsn} is not supported"
+      echo "400 (Bad Request)"
+      exit 1
+  fi
+}
+
 export PYTHONIOENCODING=utf8
 
 # variables
 CONF_DIR="conf"
 RESPONSE_CONF="$CONF_DIR/jwt/consumer/response.conf"
 DLT_CONF="$CONF_DIR/dlt/consumer/wallet.conf"
+DSN_CONF="$CONF_DIR/dsn/consumer/dsn.conf"
 typ=""
 alg=""
 iss=""
@@ -195,12 +211,8 @@ uri=""
 . $RESPONSE_CONF
 [ -r "$DLT_CONF" ] || error "$DLT_CONF"
 . $DLT_CONF
-
-# verify DLT support
-if [ $VALID_DLT != "namecoin" ]; then
-  echo "$DLT is not supported"
-  exit 1
-fi
+[ -r "$DSN_CONF" ] || error "$DSN_CONF"
+. $DSN_CONF
 
 # create token cache file
 if [ ! -f $TOKEN_CACHE ]; then
@@ -264,6 +276,7 @@ get_alg
 get_iss
 get_exp no_cache
 get_dlt
+get_dsn
 
 # get the uri value from NMC
 nshow=$(namecoin-cli -datadir=$NMC_DATA_DIR name_show "$iss")
