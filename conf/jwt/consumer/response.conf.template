@@ -1,0 +1,18 @@
+# JWT Consumer configuration
+
+# DSN HTTP gateway
+DSN_HTTP_GW="http://127.0.0.1:8080"
+
+# valid JWT variables
+VALID_ALGORITHM="ES256"
+VALID_TYP="JWT"
+VALID_DLT="namecoin"
+VALID_DSN="ipfs"
+
+# authorization based on social graph
+AUTHORIZATION="true"
+PROFILE_URI="/ipns/<hash>/name.rdf"
+
+# site cache
+TOKEN_CACHE="$TMP_DIR/token_cache.dat"
+PROFILE_URI_CACHE="$TMP_DIR/profile_uri"
