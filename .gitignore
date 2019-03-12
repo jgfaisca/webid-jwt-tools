@@ -1,3 +1,7 @@
 tmp/
-conf/jwt/jwt.conf
-conf/dlt/wallet.conf
+conf/jwt/consumer/*.conf
+conf/jwt/producer/*.conf
+conf/jwt/*.conf
+conf/dlt/consumer/*.conf
+conf/dlt/producer/*.conf
+conf/dlt/*.conf

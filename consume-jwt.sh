@@ -4,26 +4,40 @@
 #
 # Usage:
 # PATH=$PATH:$(pwd)
-# consume-jwt.sh 
+# consume-jwt.sh
 #
 # Description:
-# Using the nc (Netcat) command for arbitrary TCP 
+# Using the nc (Netcat) command for arbitrary TCP
 # connections and listens and a named pipe for reading or writing
 #
+# Note:
+# REQUEST and AUTH variables are exported, so the response
+# script can parse it
+#
+
+# error function
+function error(){
+  echo "Error: The file $1 was not found."
+  exit 1
+}
 
 # variables
-LOG_REQ="/tmp/requests.log" # requests log
-FIFO_OUT="/tmp/fifo_out"    # named pipe
-PORT="8888"                 # local port number 
-ADDR="0.0.0.0"              # local source address
+CONF_DIR="conf"
+CONSUMER_CONF="$CONF_DIR/jwt/consumer/consumer.conf"
+
+# read configuration file
+[ -r "$CONSUMER_CONF" ] || error "$CONSUMER_CONF"
+. $CONSUMER_CONF
+
+export TMP_DIR
 export LOG_REQ
 
 # create log file
-[ -f "$LOG_REQ" ] && rm -f "$LOG_REQ" 
+[ -f "$LOG_REQ" ] && rm -f "$LOG_REQ"
 touch $LOG_REQ
 
 # create named pipe
-[ -p "$FIFO_OUT" ] && rm -f "$FIFO_OUT" 
+[ -p "$FIFO_OUT" ] && rm -f "$FIFO_OUT"
 mkfifo $FIFO_OUT
 trap "rm -f $FIFO_OUT" EXIT
 
@@ -33,20 +47,20 @@ echo "Serving HTTP on $ADDR port $PORT ..."
 while true
 do
   cat $FIFO_OUT | nc -l -q 0 -s $ADDR -p $PORT > >( # parse the netcat output, to build the answer redirected to "fifo_out".
+    export AUTH=
     export REQUEST=
     while read line
     do
       echo $line | head --bytes 2000 >>$LOG_REQ # write request to log file
       line=$(echo "$line" | tr -d '[\r\n]')
-
-      if echo "$line" | grep -qE '^GET /' # if line starts with "GET /"
-      then
+      if echo "$line" | grep -qE '^Authorization:'; then # if line starts with "Authorization:"
+	AUTH=$line
+      fi
+      if echo "$line" | grep -qE '^GET /'; then # if line starts with "GET /"
         REQUEST=$(echo "$line" | cut -d ' ' -f2) # extract the request
-      elif [ "x$line" = x ] # empty line / end of request
-      then
+      elif [ "x$line" = x ]; then # empty line / end of request
         # call response script
-        # Note: REQUEST is exported, so the script can parse it (to answer 200/403/404 status code + content)
-        response.sh > $FIFO_OUT
+        response.sh > $FIFO_OUT &
       fi
     done
   )
