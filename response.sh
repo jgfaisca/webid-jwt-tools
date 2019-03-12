@@ -100,7 +100,7 @@ remove_from_cache(){
 
 # get typ value
 get_typ(){
-  typ=$(echo $header | python -c "import sys, json; print json.load(sys.stdin)['typ']" 2>&1 >/dev/null)
+  typ=$(echo $header | python -c "import sys, json; print json.load(sys.stdin)['typ']")
   if [ $? -ne 0 ]; then
       code_400 "missing typ value"
       echo "400 (Bad Request)"
