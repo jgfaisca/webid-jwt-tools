@@ -1,0 +1,4 @@
+# DSN Configuration
+
+# DSN HTTP gateway
+DSN_HTTP_GW="http://127.0.0.1:8080"
