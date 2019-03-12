@@ -1,4 +1,4 @@
-# JWT consumer server configuration 
+# JWT consumer configuration 
 
 # temporary directory
 TMP_DIR="/tmp"
