@@ -60,7 +60,7 @@ do
         REQUEST=$(echo "$line" | cut -d ' ' -f2) # extract the request
       elif [ "x$line" = x ]; then # empty line / end of request
         # call response script
-        test-response.sh > $FIFO_OUT &
+        response.sh > $FIFO_OUT &
       fi
     done
   )
