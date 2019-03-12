@@ -53,17 +53,41 @@ code_403(){
    echo
 }
 
-# status code 200 HTML default response
+# respond with the HTTP 404 (Not Found) status code
+code_404(){
+   echo -e "HTTP/1.1 404 Not Found\r"
+   echo "Content-type: text/html; charset=UTF-8"
+   echo
+}
+
+# status code 200 HTML unprotected
 response_200(){
 	cat <<- _EOF_
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-   <title>Protected Resource</title>
+   <title>Unprotected Example</title>
 </head>
 <body>
-   <h3>Wellcome!</h3>
+   <h3>Unprotected!</h3>
+   <p>This is an unprotected resource.</p>
+</body>
+</html>
+	_EOF_
+}
+
+# status code 200 HTML protected
+response_200_protected(){
+	cat <<- _EOF_
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+   <title>Protected Example</title>
+</head>
+<body>
+   <h3>Protected!</h3>
    <p>Hello $1, this is a protected resource.</p>
 </body>
 </html>
@@ -219,7 +243,22 @@ if [ ! -f $TOKEN_CACHE ]; then
     touch $TOKEN_CACHE
 fi
 
-# verify exported AUTH variable
+# process REQUEST variable
+if [ -z "${REQUEST}" ]; then
+   code_400 "empty request"
+   echo "400 (Bad Request)"
+   exit 1
+elif [ "${REQUEST}" == "/" ] || [ "${REQUEST}" == "/home" ]; then
+   code_200
+   response_200
+   exit 0
+elif [ "${REQUEST}" != "/protected" ]; then
+   code_404
+   echo "404 (Not Found)"
+   exit 1
+fi
+
+# process AUTH variable
 if [ -z "${AUTH}" ]; then
     # get authentication request from log last line
     AUTH=$(cat $LOG_REQ | tail -2)
@@ -248,7 +287,7 @@ if [ $? -eq 0 ]; then # found
    get_exp cache
    name=$(echo $TOKEN_CACHE_VAL | python -c "import sys, json; print json.load(sys.stdin)['name']")
    code_200
-   response_200 "$name"
+   response_200_protected "$name"
    exit 0
 fi
 
@@ -314,7 +353,7 @@ verify=$(namecoin-cli -datadir=$NMC_DATA_DIR verifymessage $address $signature "
 
 if [ "$verify" == "true" ]; then
 	code_200
-	response_200 "$name"
+	response_200_protected "$name"
 	add_to_cache
 	exit 0
   else
