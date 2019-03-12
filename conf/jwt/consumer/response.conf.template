@@ -1,4 +1,4 @@
-# JWT Consumer configuration
+# JWT consumer response configuration
 
 # valid JWT variables
 VALID_ALGORITHM="ES256"
@@ -10,6 +10,6 @@ VALID_DSN="ipfs"
 AUTHORIZATION="true"
 PROFILE_URI="/ipns/<hash>/name.rdf"
 
-# site cache
+# cache
 TOKEN_CACHE="$TMP_DIR/token_cache.dat"
 PROFILE_URI_CACHE="$TMP_DIR/profile_uri"
