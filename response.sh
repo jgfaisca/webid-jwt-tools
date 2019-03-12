@@ -115,7 +115,7 @@ get_typ(){
 
 # get alg value
 get_alg(){
-  alg=$(echo $header | python -c "import sys, json; print json.load(sys.stdin)['alg']" 2>&1 >/dev/null)
+  alg=$(echo $header | python -c "import sys, json; print json.load(sys.stdin)['alg']")
   if [ $? -ne 0 ]; then
       code_400 "missing alg value"
       echo "400 (Bad Request)"
@@ -130,7 +130,7 @@ get_alg(){
 
 # get iss value
 get_iss(){
-  iss=$(echo $payload | python -c "import sys, json; print json.load(sys.stdin)['iss']" 2>&1 >/dev/null)
+  iss=$(echo $payload | python -c "import sys, json; print json.load(sys.stdin)['iss']")
   if [ $? -ne 0 ]; then
       code_400 "missing iss value"
       echo "400 (Bad Request)"
@@ -141,9 +141,9 @@ get_iss(){
 # get exp value
 get_exp(){
   if [ "$1" == "cache" ]; then
-     exp=$(echo $TOKEN_CACHE_VAL | python -c "import sys, json; print json.load(sys.stdin)['exp']" 2>&1 >/dev/null)
+     exp=$(echo $TOKEN_CACHE_VAL | python -c "import sys, json; print json.load(sys.stdin)['exp']")
   else
-     exp=$(echo $payload | python -c "import sys, json; print json.load(sys.stdin)['exp']" 2>&1 >/dev/null)
+     exp=$(echo $payload | python -c "import sys, json; print json.load(sys.stdin)['exp']")
   fi
   if [ $? -eq 0 ]; then
       now=$(date +%s) # current time
@@ -158,7 +158,7 @@ get_exp(){
 
 # get dlt value
 get_dlt(){
-  dlt=$(echo $payload | python -c "import sys, json; print json.load(sys.stdin)['dlt']" 2>&1 >/dev/null)
+  dlt=$(echo $payload | python -c "import sys, json; print json.load(sys.stdin)['dlt']")
   if [ $? -ne 0 ]; then
       code_400 "missing dlt value"
       echo "400 (Bad Request)"
@@ -173,7 +173,7 @@ get_dlt(){
 
 # get dsn value
 get_dsn(){
-  dsn=$(echo $payload | python -c "import sys, json; print json.load(sys.stdin)['dsn']" 2>&1 >/dev/null)
+  dsn=$(echo $payload | python -c "import sys, json; print json.load(sys.stdin)['dsn']")
   if [ $? -ne 0 ]; then
       code_400 "missing dsn value"
       echo "400 (Bad Request)"
@@ -280,8 +280,8 @@ get_dsn
 
 # get the uri value from NMC
 nshow=$(namecoin-cli -datadir=$NMC_DATA_DIR name_show "$iss")
-out1=$(echo $nshow | python -c "import sys, json; print json.load(sys.stdin)['value']" 2>&1 >/dev/null)
-uri=$(echo $out1 | python -c "import sys, json; print json.load(sys.stdin)['uri']" 2>&1 >/dev/null)
+out1=$(echo $nshow | python -c "import sys, json; print json.load(sys.stdin)['value']")
+uri=$(echo $out1 | python -c "import sys, json; print json.load(sys.stdin)['uri']")
 
 # validate authorization
 if [ "$AUTHORIZATION" == "true" ]; then
