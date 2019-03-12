@@ -23,19 +23,19 @@ function replaceVar(){
 # variables
 TMP_DIR="./tmp"
 CONF_DIR="conf"
-JWT_CONF_FILE="$CONF_DIR/jwt/jwt.conf"
-HEADER_TEMPLATE="$CONF_DIR/jwt/header.template"
-PAYLOAD_TEMPLATE="$CONF_DIR/jwt/payload.template"
-DLT_CONF_FILE="$CONF_DIR/dlt/wallet.conf"
+PRODUCER_CONF="$CONF_DIR/jwt/producer/producer.conf"
+HEADER_TEMPLATE="$CONF_DIR/jwt/producer/header.template"
+PAYLOAD_TEMPLATE="$CONF_DIR/jwt/producer/payload.template"
+DLT_CONF="$CONF_DIR/dlt/producer/wallet.conf"
 
 # create temporary directory
 [ -d "$TMP_DIR" ] || mkdir -p $TMP_DIR
 
 # read configuration file(s)
-[ -r "$JWT_CONF_FILE" ] || error "$JWT_CONF_FILE"
-. $JWT_CONF_FILE
-[ -r "$DLT_CONF_FILE" ] || error "$DLT_CONF_FILE"
-. $DLT_CONF_FILE
+[ -r "$PRODUCER_CONF" ] || error "$PRODUCER_CONF"
+. $PRODUCER_CONF
+[ -r "$DLT_CONF" ] || error "$DLT_CONF"
+. $DLT_CONF
 
 # verify DLT support
 if [ $DLT != "namecoin" ]; then 
