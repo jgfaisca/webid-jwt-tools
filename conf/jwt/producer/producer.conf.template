@@ -13,3 +13,5 @@ DSN="_dsn"                # dsn - Identifies the Decentralized Storage Network
 # --- exp ---
 MINUTES=30                # Adding time (minutes) to current date
 
+# --- ssl/tls ---
+SSL="true"		  # Force TLS/SSL connection	
