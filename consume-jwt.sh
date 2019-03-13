@@ -45,9 +45,9 @@ touch $LOG_REQ
 mkfifo $FIFO_OUT
 trap "rm -f $FIFO_OUT" EXIT
 
-# netcat (ncat) command
+# ncat command
 CMD="ncat --listen $ADDR $PORT"
-# netcat (nc) command
+# nc command
 #CMD="nc -l -q 0 -s $ADDR -p $PORT"
 
 # enable SSL
