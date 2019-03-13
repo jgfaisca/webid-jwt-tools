@@ -20,5 +20,5 @@ SSL="true"
 
 # ssl/tls certificates
 CERTS_DIR="certs/ssl/sample"
-HOST_CERT=$CERTS_DIR/example.crt
-HOST_KEY=$CERTS_DIR/example.key
+HOST_CERT=$CERTS_DIR/host.crt
+HOST_KEY=$CERTS_DIR/host.key
