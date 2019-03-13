@@ -23,4 +23,6 @@ TMP_DIR="./tmp"
 [ -r "$TMP_DIR/access_token" ] && JWT=$(cat $TMP_DIR/access_token) || error "$TMP_DIR/access_token"
 URL="$1"
 
-curl -v -H "Authorization: Bearer ${JWT}" ${URL} || printf '%s\n' $?
+[[ $URL == https://* ]] && ARG="--insecure" || ARG=""
+
+curl -v $ARG -H "Authorization: Bearer ${JWT}" ${URL} || printf '%s\n' $?
