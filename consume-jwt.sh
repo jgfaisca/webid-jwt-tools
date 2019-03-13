@@ -65,7 +65,7 @@ fi
 
 while true
 do
-  cat $FIFO_OUT | $CMD > >(
+    cat $FIFO_OUT | $CMD > >(
     export AUTH=
     export REQUEST=
     while read line
