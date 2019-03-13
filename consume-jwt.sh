@@ -7,8 +7,12 @@
 # consume-jwt.sh
 #
 # Description:
-# Using the nc (Netcat) command for arbitrary TCP
-# connections and listens and a named pipe for reading or writing
+# Using the ncat (Nmap/Netcat) command for arbitrary TCP
+# connections and listens and a named pipe for reading
+# or writing. The ncat command provide SSL-support.
+#
+# Dependencies:
+# $ apt-get install nmap
 #
 # Note:
 # REQUEST and AUTH variables are exported, so the response
@@ -26,7 +30,7 @@ CONF_DIR="conf"
 CONSUMER_CONF="$CONF_DIR/jwt/consumer/consumer.conf"
 
 # read configuration file
-[ -r "$CONSUMER_CONF" ] || error "$CONSUMER_CONF"
+[ -s "$CONSUMER_CONF" ] || error "$CONSUMER_CONF"
 . $CONSUMER_CONF
 
 export TMP_DIR
@@ -41,12 +45,27 @@ touch $LOG_REQ
 mkfifo $FIFO_OUT
 trap "rm -f $FIFO_OUT" EXIT
 
-# print initial console message
-echo "Serving HTTP on $ADDR port $PORT ..."
+# netcat (ncat) command
+CMD="ncat --listen $ADDR $PORT"
+# netcat (nc) command
+#CMD="nc -l -q 0 -s $ADDR -p $PORT"
+
+# enable SSL
+if [ "$SSL" == "true" ] && [ -s "$HOST_CRT" ] && [ -s "$HOST_KEY" ] ; then
+   CMD=$CMD" --ssl --ssl-cert $HOST_CRT --ssl-key $HOST_KEY"
+   echo "Using --ssl-key and --ssl-cert for permanent keys."
+   echo "Serving HTTPS on $ADDR port $PORT ..."
+elif [ "$SSL" == "true" ]; then
+   CMD=$CMD" --ssl"
+   echo "Using a temporary 1024-bit RSA key."
+   echo "Serving HTTPS on $ADDR port $PORT ..."
+else
+   echo "Serving HTTP on $ADDR port $PORT ..."
+fi
 
 while true
 do
-  cat $FIFO_OUT | nc -l -q 0 -s $ADDR -p $PORT > >( # parse the netcat output, to build the answer redirected to "fifo_out".
+  cat $FIFO_OUT | $CMD > >(
     export AUTH=
     export REQUEST=
     while read line
@@ -65,3 +84,5 @@ do
     done
   )
 done
+
+exit 0

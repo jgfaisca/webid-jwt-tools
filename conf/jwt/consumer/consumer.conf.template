@@ -14,3 +14,11 @@ ADDR="0.0.0.0"
 
 # log
 LOG_REQ="$TMP_DIR/requests.log"
+
+# enable ssl/tls
+SSL="true"
+
+# ssl/tls certificates
+CERTS_DIR="certs/ssl/sample"
+HOST_CERT=$CERTS_DIR/example.crt
+HOST_KEY=$CERTS_DIR/example.key
