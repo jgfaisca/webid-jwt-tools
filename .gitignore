@@ -10,7 +10,12 @@ conf/dlt/producer/*.conf
 conf/dlt/*.conf
 certs/ssl/default/*
 certs/ssl/sample/*
+var/html/private/*
+var/html/public/*
 #include sample certificates
 !certs/ssl/sample/host.crt  
 !certs/ssl/sample/host.key 
 !certs/ssl/sample/host.csr
+#include sample html files
+!var/html/public/index.html
+!var/html/private/index.html

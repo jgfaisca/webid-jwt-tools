@@ -70,19 +70,19 @@ do
     export REQUEST=
     while read line
     do
-      echo $line | head --bytes 2000 >>$LOG_REQ # write request to log file
-      line=$(echo "$line" | tr -d '[\r\n]')
-      if echo "$line" | grep -qE '^Authorization:'; then # if line starts with "Authorization:"
-	AUTH=$line
-      fi
-      if echo "$line" | grep -qE '^GET /'; then # if line starts with "GET /"
-        REQUEST=$(echo "$line" | cut -d ' ' -f2) # extract the request
-      elif [ "x$line" = x ]; then # empty line / end of request
-        # call response script
-        response.sh > $FIFO_OUT &
-      fi
+       echo $line | head --bytes 2000 >>$LOG_REQ # write request to log file
+       line=$(echo "$line" | tr -d '[\r\n]')
+       if echo "$line" | grep -qE '^Authorization:'; then # if line starts with "Authorization:"
+          AUTH=$line
+       fi
+       if echo "$line" | grep -qE '^GET /'; then # if line starts with "GET /"
+          REQUEST=$(echo "$line" | cut -d ' ' -f2) # extract the request
+       elif [ "x$line" = x ]; then # empty line / end of request
+          # call response script
+          response.sh > $FIFO_OUT &
+       fi
     done
-  )
+   )
 done
 
 exit 0

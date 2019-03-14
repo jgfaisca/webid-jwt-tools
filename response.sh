@@ -62,53 +62,22 @@ code_404(){
 
 # status code 200 HTML unprotected
 response_200(){
-	cat <<- _EOF_
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-   <title>Unprotected Example</title>
-</head>
-<body>
-   <h3>Unprotected!</h3>
-   <p>This is an unprotected resource.</p>
-</body>
-</html>
-	_EOF_
+  CMD="cat $DOCUMENT_ROOT/public/index.html"
+  eval $CMD
 }
 
 # status code 200 HTML protected
 response_200_protected(){
-	cat <<- _EOF_
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-   <title>Protected Example</title>
-</head>
-<body>
-   <h3>Protected!</h3>
-   <p>Hello $1, this is a protected resource.</p>
-</body>
-</html>
-	_EOF_
+  USER_NAME="$1"
+  CMD="cat $DOCUMENT_ROOT/private/index.html \
+| perl -pe 's|%USER_NAME%|${USER_NAME}|g'"
+  eval $CMD
 }
 
 # status code 403 HTML response
 response_403(){
-	cat <<- _EOF_
- <!DOCTYPE html>
- <html>
- <head>
- <meta charset="UTF-8">
-    <title>Failed Login Attempt</title>
- </head>
- <body>
-    <h3>Authentication Error!</h3>
-    </p>Please check your user id and and try again.</p>
- </body>
- </html>
-	_EOF_
+  CMD="cat $DOCUMENT_ROOT/status/response_403.html"
+  eval $CMD
 }
 
 # add token hash to cache

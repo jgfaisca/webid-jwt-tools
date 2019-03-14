@@ -10,6 +10,11 @@ VALID_DSN="ipfs"
 AUTHORIZATION="true"
 PROFILE_URI="/ipns/<hash>/name.rdf"
 
+# document root
+DOCUMENT_ROOT="var/html"
+
 # cache
 TOKEN_CACHE="$TMP_DIR/token_cache.dat"
 PROFILE_URI_CACHE="$TMP_DIR/profile_uri"
+
+
