@@ -1,21 +1,23 @@
+
 tmp/
+
 conf/jwt/consumer/*.conf
 conf/jwt/producer/*.conf
-conf/jwt/*.conf
 conf/dlt/consumer/*.conf
 conf/dlt/producer/*.conf
-conf/dlt/*.conf
 conf/dlt/consumer/*.conf
 conf/dlt/producer/*.conf
-conf/dlt/*.conf
+conf/dsn/consumer/*.conf
+conf/dsn/producer/*.conf
+
+var/html/private/*
+var/html/public/*
+#include sample html files
+!var/html/private/index.*  
+!var/html/public/index.*
+
 certs/ssl/default/*
 certs/ssl/sample/*
-var/html/private/
-var/html/public/
 #include sample certificates
-!certs/ssl/sample/host.crt  
-!certs/ssl/sample/host.key 
-!certs/ssl/sample/host.csr
-#include sample html files
-!var/html/public/index.html
-!var/html/private/index.html
+!certs/ssl/sample/host.*
+
