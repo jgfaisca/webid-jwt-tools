@@ -179,6 +179,38 @@ get_dsn(){
   fi
 }
 
+private_req(){
+  base_name=$(basename ${REQUEST})
+  if [ $base_name == "private" ] || [ $base_name == "index.html" ] ; then
+        code_200
+        response_200_protected "$name"
+        exit 0
+  elif [ -f ${DOCUMENT_ROOT}${REQUEST} ]; then
+        cat ${DOCUMENT_ROOT}${REQUEST}
+        exit 0
+  else
+        code_404
+        echo "404 (Not Found)"
+        exit 1
+  fi
+}
+
+public_req(){
+  base_name=$(basename ${REQUEST})
+  if [ $base_name == "public" ] || [ $base_name == "index.html" ] ; then
+        code_200
+        response_200
+        exit 0
+  elif [ -f ${DOCUMENT_ROOT}${REQUEST} ]; then
+        cat ${DOCUMENT_ROOT}${REQUEST}
+        exit 0
+  else
+        code_404
+        echo "404 (Not Found)"
+        exit 1
+  fi
+}
+
 export PYTHONIOENCODING=utf8
 
 # variables
@@ -217,11 +249,9 @@ if [ -z "${REQUEST}" ]; then
    code_400 "empty request"
    echo "400 (Bad Request)"
    exit 1
-elif [ "${REQUEST}" == "/" ] || [ "${REQUEST}" == "/home" ]; then
-   code_200
-   response_200
-   exit 0
-elif [ "${REQUEST}" != "/protected" ]; then
+elif [[ "${REQUEST}" == /public* ]]; then
+   public_req
+elif [[ "${REQUEST}" != /private* ]]; then
    code_404
    echo "404 (Not Found)"
    exit 1
@@ -255,9 +285,7 @@ TOKEN_CACHE_VAL=$(grep -F "$TOKEN_HASH" $TOKEN_CACHE)
 if [ $? -eq 0 ]; then # found
    get_exp cache
    name=$(echo $TOKEN_CACHE_VAL | python -c "import sys, json; print json.load(sys.stdin)['name']")
-   code_200
-   response_200_protected "$name"
-   exit 0
+   private_req
 fi
 
 # stripping the JWT parts Header.Payload.Signature into an array
@@ -298,7 +326,7 @@ if [ "$AUTHORIZATION" == "true" ]; then
    fi
    triples-knows.py $PROFILE_URI_CACHE | grep --quiet -w ${uri}
    if [ $? -ne 0 ]; then # not known
-      code_403 "not known"
+      code_403 "not a known person"
       response_403
       exit 1
    fi
@@ -321,14 +349,12 @@ rm -f $tmpfile
 verify=$(namecoin-cli -datadir=$NMC_DATA_DIR verifymessage $address $signature "$message")
 
 if [ "$verify" == "true" ]; then
-	code_200
-	response_200_protected "$name"
-	add_to_cache
-	exit 0
-  else
-	code_403 "not authorized"
-  	response_403
-	exit 1
+   add_to_cache
+   private_req
+else
+   code_403 "not authorized"
+   response_403
+   exit 1
 fi
 
 exit 0
