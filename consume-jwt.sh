@@ -60,20 +60,11 @@ if [ "$VERBOSE" == "true" ]; then
    CMD=$CMD" --verbose"
 fi
 
-# HTTPS forwarding
-https-forwarding.sh &
-
-# enable SSL
-if [ "$SSL" == "true" ] && [ -s "$HOST_CRT" ] && [ -s "$HOST_KEY" ] ; then
-   CMD=$CMD" --ssl --ssl-cert $HOST_CRT --ssl-key $HOST_KEY"
-   echo "Using --ssl-key and --ssl-cert for permanent keys."
-   echo "Serving HTTPS on $ADDR port $PORT ..."
-elif [ "$SSL" == "true" ]; then
-   CMD=$CMD" --ssl"
-   echo "Using a temporary 1024-bit RSA key."
-   echo "Serving HTTPS on $ADDR port $PORT ..."
-else
-   echo "Serving HTTP on $ADDR port $PORT ..."
+# enable SSL/TLS
+if [ "$SSL" == "true" ] ; then
+   [ -s "$HOST_CRT" ] || error "$HOST_CRT"
+   [ -s "$HOST_KEY" ] || error "$HOST_KEY"
+   https-forwarding.sh &
 fi
 
 while true
