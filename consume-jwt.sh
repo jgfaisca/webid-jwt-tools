@@ -20,7 +20,7 @@
 #
 
 function finish {
-  rm -f $FIFO_OUT"
+  rm -f $FIFO_OUT
   pkill ncat
   pkill socat
 }
@@ -68,7 +68,7 @@ if [ "$VERBOSE" == "true" ]; then
 fi
 
 # enable SSL/TLS
-if [ "$SSL" == "true" ] ; then
+if [ "$SSL" == "true" ]; then
    [ -s "$HOST_CRT" ] || error "$HOST_CRT"
    [ -s "$HOST_KEY" ] || error "$HOST_KEY"
    https-forwarding.sh &
