@@ -33,6 +33,7 @@ CONSUMER_CONF="$CONF_DIR/jwt/consumer/consumer.conf"
 [ -s "$CONSUMER_CONF" ] || error "$CONSUMER_CONF"
 . $CONSUMER_CONF
 
+# export variables
 export TMP_DIR
 export LOG_REQ
 
@@ -52,12 +53,12 @@ CMD="ncat --listen $ADDR $PORT"
 
 # access control
 if [[ ! -z "$ALLOW_FILE" && -s "$ALLOW_FILE" ]]; then
-   CMD=$CMD" --allowfile $ALLOW_FILE"
+   CMD+=" --allowfile $ALLOW_FILE"
 fi
 
 # verbosity level (can be used several times)
 if [ "$VERBOSE" == "true" ]; then
-   CMD=$CMD" --verbose"
+   CMD+=" --verbose"
 fi
 
 # enable SSL/TLS
