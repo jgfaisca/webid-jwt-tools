@@ -35,7 +35,6 @@ if [ -z "$DOMAIN_NAME" ]; then
 fi
 
 if [ ! -z "$2" ]; then
-   echo $2
    if [ "$2" != "--dry-run" ]; then
       echo "Error: invalid argument $2"
       exit 1

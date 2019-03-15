@@ -36,7 +36,7 @@ CONSUMER_CONF="$CONF_DIR/jwt/consumer/consumer.conf"
 export TMP_DIR
 export LOG_REQ
 
-# create log file
+# create log file(s)
 [ -f "$LOG_REQ" ] && rm -f "$LOG_REQ"
 touch $LOG_REQ
 
@@ -49,6 +49,19 @@ trap "rm -f $FIFO_OUT" EXIT
 CMD="ncat --listen $ADDR $PORT"
 # nc command
 #CMD="nc -l -q 0 -s $ADDR -p $PORT"
+
+# access control
+if [[ ! -z "$ALLOW_FILE" && -s "$ALLOW_FILE" ]]; then
+   CMD=$CMD" --allowfile $ALLOW_FILE"
+fi
+
+# verbosity level (can be used several times)
+if [ "$VERBOSE" == "true" ]; then
+   CMD=$CMD" --verbose"
+fi
+
+# HTTPS forwarding
+https-forwarding.sh &
 
 # enable SSL
 if [ "$SSL" == "true" ] && [ -s "$HOST_CRT" ] && [ -s "$HOST_KEY" ] ; then

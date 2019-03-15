@@ -6,19 +6,28 @@ TMP_DIR="/tmp"
 # named pipe
 FIFO_OUT="$TMP_DIR/fifo_out"
 
-# local port number
+# local port number(s)
 PORT="8888"
+PORT_SSL="4433"
 
-# local source address
+# local source address(s)
 ADDR="0.0.0.0"
+ADDR_SSL="0.0.0.0"
 
 # log
 LOG_REQ="$TMP_DIR/requests.log"
+LOG_HTTPS="$TMP_DIR/https.log"
+
+# verbose
+VERBOSE="true"
 
 # enable ssl/tls
 SSL="true"
 
 # ssl/tls certificates
 CERTS_DIR="certs/ssl/sample"
-HOST_CERT=$CERTS_DIR/host.crt
+HOST_CRT=$CERTS_DIR/host.crt
 HOST_KEY=$CERTS_DIR/host.key
+
+# allow file
+ALLOW_FILE="conf/jwt/consumer/trusted-hosts.txt"

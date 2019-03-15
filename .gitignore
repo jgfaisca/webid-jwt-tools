@@ -10,6 +10,15 @@ conf/dlt/producer/*.conf
 conf/dsn/consumer/*.conf
 conf/dsn/producer/*.conf
 
+conf/jwt/consumer/*.txt
+conf/jwt/producer/*.txt
+conf/dlt/consumer/*.txt
+conf/dlt/producer/*.txt
+conf/dlt/consumer/*.txt
+conf/dlt/producer/*.txt
+conf/dsn/consumer/*.txt
+conf/dsn/producer/*.txt
+
 var/html/private/*
 var/html/public/*
 #include sample html files
