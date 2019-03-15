@@ -19,6 +19,13 @@
 # script can parse it
 #
 
+function finish {
+  rm -f $FIFO_OUT"
+  pkill ncat
+  pkill socat
+}
+trap finish EXIT
+
 # error function
 function error(){
   echo "Error: The file $1 was not found."
@@ -44,7 +51,6 @@ touch $LOG_REQ
 # create named pipe
 [ -p "$FIFO_OUT" ] && rm -f "$FIFO_OUT"
 mkfifo $FIFO_OUT
-trap "rm -f $FIFO_OUT" EXIT
 
 # ncat command
 CMD="ncat --listen $ADDR $PORT"
