@@ -71,7 +71,7 @@ fi
 if [ "$SSL" == "true" ]; then
    [ -s "$HOST_CRT" ] || error "$HOST_CRT"
    [ -s "$HOST_KEY" ] || error "$HOST_KEY"
-   https-forwarding.sh &
+   https-proxy.sh &
 fi
 
 while true
