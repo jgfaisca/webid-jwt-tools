@@ -20,8 +20,11 @@ HOST_PORT="$1"
 FPRINT_1="$2"
 
 FPRINT_0=$(echo | openssl s_client -connect $HOST_PORT |& openssl x509 -fingerprint -noout | cut -f2 -d'=')
+
 FPRINT_0="${FPRINT_0//:}"
 FPRINT_1="${FPRINT_1//:}"
+FPRINT_0=$(echo $FPRINT_0 | tr '[:lower:]' '[:upper:]')
+FPRINT_1=$(echo $FPRINT_1 | tr '[:lower:]' '[:upper:]')
 
 if [ "$FPRINT_0" == "$FPRINT_1" ]; then
     echo true
