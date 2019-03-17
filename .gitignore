@@ -19,10 +19,10 @@ conf/dlt/producer/*.txt
 conf/dsn/consumer/*.txt
 conf/dsn/producer/*.txt
 
-var/html/private/*
-var/html/public/*
+var/www/private/*
+var/www/public/*
 #include sample html files
-!var/html/private/index.*  
-!var/html/public/index.*
+!var/www/private/index.*  
+!var/www/public/index.*
 
 certs/ssl/default/*
