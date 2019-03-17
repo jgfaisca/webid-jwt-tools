@@ -11,7 +11,7 @@ AUTHORIZATION="true"
 PROFILE_URI="/ipns/<hash>/name.rdf"
 
 # document root
-DOCUMENT_ROOT="var/html"
+DOCUMENT_ROOT="var/www"
 
 # cache
 TOKEN_CACHE="$TMP_DIR/token_cache.dat"
