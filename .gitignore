@@ -26,7 +26,3 @@ var/html/public/*
 !var/html/public/index.*
 
 certs/ssl/default/*
-certs/ssl/sample/*
-#include sample certificates
-!certs/ssl/sample/host.*
-
