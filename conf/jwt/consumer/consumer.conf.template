@@ -26,8 +26,8 @@ SSL="true"
 
 # ssl/tls certificates
 CERTS_DIR="certs/ssl/sample"
-HOST_CRT=$CERTS_DIR/host.crt
-HOST_KEY=$CERTS_DIR/host.key
+HOST_CRT=$CERTS_DIR/host-crt.pem
+HOST_KEY=$CERTS_DIR/host-key.pem
 
 # allow file
 ALLOW_FILE="conf/jwt/consumer/trusted-hosts.txt"
